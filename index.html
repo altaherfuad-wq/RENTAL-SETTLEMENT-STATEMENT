@@ -399,6 +399,12 @@
     .field-wrapper{position:relative}
     .field-hint{font-size:0.72rem;margin-top:3px;display:flex;align-items:center;gap:5px;color:#ea580c;opacity:0;transform:translateY(-2px);transition:opacity 0.2s ease,transform 0.2s ease;pointer-events:none}
 
+    /* Input-with-lock: small inline checkbox inside numeric inputs (left) */
+    .input-with-lock{position:relative;display:inline-flex;align-items:center}
+    .input-with-lock .sc-rate-lock-inside{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:4px;border:1px solid rgba(15,23,42,0.12);background:#fff;display:inline-block;position:absolute;left:6px;top:50%;transform:translateY(-50%);cursor:pointer}
+    .input-with-lock .sc-rate-lock-inside:checked{background:#1e3a5f;border-color:#1e3a5f}
+    .input-with-lock input[type="number"]{padding-left:32px}
+
     /* Buyer name subtle styling: calm, faded (not shiny) */
     /* Softer, non-black muted tone for buyer name */
     .buyer-name-input{color:rgba(71,85,105,0.68);background:rgba(71,85,105,0.02);border:1px solid rgba(15,23,42,0.04);box-shadow:none;padding:4px 8px;border-radius:6px;transition:all 0.15s ease}
@@ -1855,7 +1861,10 @@
             <label class="mini-toggle"><input type="checkbox" id="scFieldsMandatory" checked="">Req</label>
             <span class="field-emoji" id="scRateEmoji" title="SC rate">📐</span>
           </div>
-          <input type="number" id="scRate" min="6" max="20" step="0.01" inputmode="decimal" placeholder="6" value="6" required="">
+          <div class="input-with-lock">
+            <input type="checkbox" id="scRateLockInside" class="sc-rate-lock-inside" title="Lock SC Rate" aria-label="Lock SC Rate">
+            <input type="number" id="scRate" min="6" max="20" step="0.01" inputmode="decimal" placeholder="6" value="6" required="">
+          </div>
           <span id="scRateNote" class="muted sc-rate-note" style="display: none;">SC Rate not required</span>
         </div>
         <div>
@@ -4699,6 +4708,8 @@ Examples:
         // When building name changes, auto-fill SC rate if known
         const handleBuildingChange = () => {
           const building = buildingInput.value.trim();
+          // If user explicitly locked the SC rate inside the field, do not auto-fill
+          try { if(localStorage.getItem('rs_scRate_lock_field') === '1') return; } catch(e) {}
           const savedRate = getBuildingRate(building);
           // Auto-fill rate if: we have a saved rate AND (field is empty OR not from saved case)
           if(savedRate && scRateInput && !scRateFromSavedCase && !isInitializing) {
@@ -4738,11 +4749,53 @@ Examples:
     function setupServiceChargeCalculator() {
       const scArea = qs('#scArea');
       const scRate = qs('#scRate');
+      const scRateLockInside = qs('#scRateLockInside');
+      const SC_RATE_LOCK_KEY_FIELD = 'rs_scRate_lock_field';
+      const SC_RATE_LOCK_VALUE_FIELD = 'rs_scRate_lock_value';
       const handoverDateEl = qs('#handoverDate');
       const scPaidEndEl = qs('#scPaidEnd');
       
       if(scArea) scArea.addEventListener('input', () => { calculateServiceCharge(); queueAutosave(); });
       if(scRate) scRate.addEventListener('input', () => { calculateServiceCharge(); queueAutosave(); });
+      // Inline lock inside the scRate field: keep number unchanged while checked
+      function applyFieldLock(locked){
+        try{
+          if(locked){
+            localStorage.setItem(SC_RATE_LOCK_KEY_FIELD, '1');
+            localStorage.setItem(SC_RATE_LOCK_VALUE_FIELD, (scRate?.value||'').toString());
+            if(scRate) scRate.readOnly = true;
+            scRateFromSavedCase = true;
+          } else {
+            localStorage.removeItem(SC_RATE_LOCK_KEY_FIELD);
+            localStorage.removeItem(SC_RATE_LOCK_VALUE_FIELD);
+            if(scRate) scRate.readOnly = false;
+            scRateFromSavedCase = false;
+          }
+        } catch(e){ console.warn('applyFieldLock failed', e); }
+      }
+      function loadFieldLock(){
+        try{
+          const locked = localStorage.getItem(SC_RATE_LOCK_KEY_FIELD) === '1';
+          const val = localStorage.getItem(SC_RATE_LOCK_VALUE_FIELD);
+          if(locked){
+            if(scRate) scRate.value = val || scRate.value;
+            if(scRateLockInside) scRateLockInside.checked = true;
+            if(scRate) scRate.readOnly = true;
+            scRateFromSavedCase = true;
+          }
+        } catch(e){ console.warn('loadFieldLock failed', e); }
+      }
+      if(scRateLockInside){
+        scRateLockInside.addEventListener('change', (e)=>{
+          const checked = !!e.target.checked;
+          applyFieldLock(checked);
+          queueAutosave();
+        });
+      }
+      // Update persisted locked value when user changes the scRate while locked (rare, but keep in sync)
+      if(scRate) scRate.addEventListener('change', ()=>{ try{ if(localStorage.getItem(SC_RATE_LOCK_KEY_FIELD) === '1') localStorage.setItem(SC_RATE_LOCK_VALUE_FIELD, (scRate?.value||'').toString()); }catch(e){} });
+      // Load any persisted inline lock on init
+      loadFieldLock();
       // Recalculate when dates change
       if(handoverDateEl) handoverDateEl.addEventListener('input', calculateServiceCharge);
       if(scPaidEndEl) {
@@ -7989,6 +8042,18 @@ Examples:
       updateTitle(); 
       syncUnclearedToPDC(); // Resync on reset to clear any remaining PDCs
       clearSavedState(); // Clear auto-saved data
+      // If user previously locked SC Rate inside the field, restore it after reset
+      try{
+        const locked = localStorage.getItem('rs_scRate_lock_field') === '1';
+        const val = localStorage.getItem('rs_scRate_lock_value');
+        if(locked && qs('#scRate')) {
+          qs('#scRate').value = val || qs('#scRate').value;
+          const lockEl = qs('#scRateLockInside');
+          if(lockEl) lockEl.checked = true;
+          qs('#scRate').readOnly = true;
+          scRateFromSavedCase = true;
+        }
+      } catch(e) { console.warn('restore scRate lock after reset failed', e); }
       // Reapply user's persisted toggle preferences so Req/Auto toggles remain as last chosen
       try{ if(typeof loadTogglePrefs === 'function') loadTogglePrefs(); } catch(e){ console.warn('Reapplying toggle prefs failed', e); }
       showToast('Form reset and saved data cleared');
