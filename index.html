@@ -353,11 +353,11 @@
     .building-input::placeholder{color:rgba(15,23,42,0.65);font-size:1rem;font-weight:500}
     .building-input:focus{outline:none;border-bottom-color:#fde68a;box-shadow:0 4px 12px rgba(15,23,42,0.12);background:rgba(255,255,255,0.4)}
     .page-title-strong{font-weight:700}
-    .head-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start}
-    .action-stack{display:flex;flex-direction:column;gap:10px}
-    .icon-btn{width:80px;height:80px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.4rem;position:relative;padding:0 8px;transition:all 0.2s ease;}
-    .icon-btn:hover{transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);}
-    .icon-btn small{margin-top:6px;font-size:0.7rem;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;color:#0f172a}
+    .head-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start}
+    .action-stack{display:flex;flex-direction:column;gap:8px}
+    .icon-btn{width:68px;height:68px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.19rem;position:relative;padding:0 7px;transition:all 0.2s ease;}
+    .icon-btn:hover{transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);}    
+    .icon-btn small{margin-top:5px;font-size:0.6rem;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;color:#0f172a}
     .collapsible-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
     .section-indicators{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     .section-chip{padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;background:rgba(255,255,255,0.25);color:#0f172a;border:1px solid rgba(15,23,42,0.1)}
@@ -398,6 +398,12 @@
     .inline-field{display:flex;gap:4px;align-items:center}
     .field-wrapper{position:relative}
     .field-hint{font-size:0.72rem;margin-top:3px;display:flex;align-items:center;gap:5px;color:#ea580c;opacity:0;transform:translateY(-2px);transition:opacity 0.2s ease,transform 0.2s ease;pointer-events:none}
+
+    /* Buyer name subtle styling: calm, faded (not shiny) */
+    /* Softer, non-black muted tone for buyer name */
+    .buyer-name-input{color:rgba(71,85,105,0.68);background:rgba(71,85,105,0.02);border:1px solid rgba(15,23,42,0.04);box-shadow:none;padding:4px 8px;border-radius:6px;transition:all 0.15s ease}
+    .buyer-name-input::placeholder{color:rgba(154,166,182,0.7)}
+    [data-theme="dark"] .buyer-name-input{color:rgba(203,213,225,0.85);background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.04)}
     .field-hint::before{content:'⚠️';font-size:0.75rem}
     .field-hint.show{opacity:1;transform:translateY(0)}
     .field-wrapper.field-valid .field-hint{color:#059669}
@@ -1732,41 +1738,41 @@
       <div class="head-actions head-actions-elegant" aria-label="Quick actions" style="pointer-events:auto;gap:7px;display:flex;transform:scale(0.7);transform-origin:right center;position:absolute;right:2mm;top:calc(90px - 5mm);">
         <button class="btn primary icon-btn icon-btn-elegant" id="saveCaseBtn" title="Save Current Case" aria-label="Save current case" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">●</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">SAVE</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">SAVE</small>
         </button>
         <button class="btn primary icon-btn icon-btn-elegant" id="loadCaseBtn" title="Load Saved Case" aria-label="Load saved case" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">◐</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">LOAD</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">LOAD</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="printBtn" title="Print" aria-label="Print settlement" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);color:#475569;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">⎙</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">PRINT</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">PRINT</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="excelBtn" title="Export Excel" aria-label="Export Excel" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);color:#475569;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">▤</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">EXCEL</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">EXCEL</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="previewBtn" title="Preview PDF (Ctrl+Shift+P)" aria-label="Preview PDF" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);color:#475569;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">👁</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">PREVIEW</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">PREV.</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="pdfBtn" title="Export PDF - Full (Ctrl+P)" aria-label="Export PDF" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);color:#475569;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">▭</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">PDF</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">PDF</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="buyerPdfBtn" title="Export PDF for Buyer (without Rental Cheques)" aria-label="Export Buyer PDF" style="background:#f0fdf4;border:1px solid #bbf7d0;box-shadow:0 1px 3px rgba(34,197,94,0.1);color:#166534;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#166534;opacity:0.8;">▭</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">BUYER PDF</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">BUYER PDF</small>
         </button>
         <button class="btn gray icon-btn icon-btn-elegant" id="pngBtn" title="Export PNG" aria-label="Export PNG" style="background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(100,116,139,0.1);color:#475569;padding-top:4px;padding-bottom:4px;">
           <span aria-hidden="true" style="font-size:0.72rem;color:#475569;opacity:0.8;">▢</span>
-          <small style="font-size:1.06rem;font-weight:700;letter-spacing:0.5px;">PNG</small>
+          <small style="font-size:0.72rem;font-weight:800;letter-spacing:0.03em;">PNG</small>
         </button>
       </div>
     </div>
 
     <div class="head">
-      <div class="brand brand-elegant" role="banner" style="background:linear-gradient(135deg,#1e3a5f 0%,#2c5282 100%);border:none;box-shadow:0 6px 20px rgba(30,58,95,0.25);">
+      <div class="brand brand-elegant" role="banner" style="position:relative;background:linear-gradient(135deg,#1e3a5f 0%,#2c5282 100%);border:none;box-shadow:0 6px 20px rgba(30,58,95,0.25);">
         <div class="brand-top">
           <input type="text" id="buildingName" list="buildingHistory" placeholder="Building / Tower Name" class="building-input building-input-elegant" style="background:rgba(255,255,255,0.92);border:none;color:#1e3a5f;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.1);" title="Enter building or tower name - suggestions from history">
           <datalist id="buildingHistory"><option value="Laguna Tower">Laguna Tower</option></datalist>
@@ -1781,9 +1787,15 @@
 
     <div class="card basic-info-card" style="border:2px solid #d0d9e6;margin-top:0;">
       <div class="card-head">
-        <div>
-          <div class="section-title">Basic information <span class="field-emoji" title="Basic info">ℹ️</span></div>
-          <div class="muted muted-note">Include bold unit &amp; tenant for header and exports</div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div class="section-title">Basic information <span class="field-emoji" title="Basic info">ℹ️</span></div>
+            <div class="muted muted-note" style="font-size:0.65rem;line-height:1;">Bold unit &amp; tenant — header/exports</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;transform:translateY(-2mm) translateX(15mm);">
+            <label for="buyerName" style="font-weight:400;color:#475569;font-size:0.82rem;margin:0;white-space:nowrap;">Buyer:</label>
+            <input type="text" id="buyerName" class="buyer-name-input" placeholder="e.g. John Doe" style="width:520px;max-width:70%;min-width:180px;height:26px;font-size:0.82rem;line-height:1;">
+          </div>
         </div>
       </div>
       <div class="grid" id="basicGrid">
@@ -3021,6 +3033,8 @@ Examples:
     // Comms Elements
     const msgBuyer = qs('#msgBuyer'), msgPDC = qs('#msgPDC'), msgAcc = qs('#msgAcc');
     const commBuyerName = qs('#commBuyerName'), commPdcName = qs('#commPdcName'), commAccName = qs('#commAccName'), commSenderName = qs('#commSenderName');
+    // Visible header Buyer Name input (keeps page visible but out of main Basic Info)
+    const buyerNameInput = qs('#buyerName');
     const commSectionWrapper = qs('#commSectionWrapper');
     const healthPanelBtn = qs('#healthPanelBtn');
     const calcBtn = qs('#calcBtn');
@@ -3766,6 +3780,7 @@ Examples:
         buildingName: buildingName?.value || '',
         unitNo: unitNo?.value || '',
         tenantName: tenantName?.value || '',
+        buyerName: buyerNameInput?.value || '',
         leaseStart: leaseStart?.value || '',
         leaseEnd: leaseEnd?.value || '',
         handoverDate: handoverDate?.value || '',
@@ -3895,6 +3910,7 @@ Examples:
       if(securityDeposit) setCurrencyValue(securityDeposit, state.securityDeposit);
       if(rentalCountSel) rentalCountSel.value = state.rentalCount || DEFAULT_RENTAL_COUNT;
       if(commBuyerName) commBuyerName.value = state.commBuyerName || '';
+      if(buyerNameInput) buyerNameInput.value = state.buyerName || '';
       if(commPdcName) commPdcName.value = state.commPdcName || '';
       // commSenderName is NOT restored from case state - it uses global persistence
       if(commAccName) commAccName.value = state.commAccName || '';
@@ -9064,7 +9080,7 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
     function wireEvents(){
       console.log('wireEvents starting...');
       // Auto-save on any input change
-      const autoSaveInputs = [buildingName, unitNo, tenantName, leaseStart, leaseEnd, handoverDate, rentInput, serviceCharge, securityDeposit, commBuyerName, commPdcName, commAccName].filter(e => e);
+      const autoSaveInputs = [buildingName, unitNo, tenantName, leaseStart, leaseEnd, handoverDate, rentInput, serviceCharge, securityDeposit, commBuyerName, commPdcName, commAccName, buyerNameInput].filter(e => e);
       console.log('autoSaveInputs count:', autoSaveInputs.length, autoSaveInputs);
       autoSaveInputs.forEach(el => el.addEventListener('input', queueAutosave));
       autoSaveInputs.forEach(el => el.addEventListener('change', queueAutosave));
@@ -9332,7 +9348,23 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
           e.target.setAttribute('aria-hidden', 'true');
         }
       });
-      [commBuyerName, commPdcName, commAccName, commSenderName].filter(e => e).forEach(e => e.addEventListener('input', generateMessages));
+      [commBuyerName, commPdcName, commAccName, commSenderName, buyerNameInput].filter(e => e).forEach(e => e.addEventListener('input', generateMessages));
+
+      // Keep header `#buyerName` and modal `#commBuyerName` in sync (user can edit either)
+      if(buyerNameInput && commBuyerName) {
+        // when header input changes, update comm modal field
+        buyerNameInput.addEventListener('input', () => {
+          if(commBuyerName) commBuyerName.value = buyerNameInput.value;
+          generateMessages();
+          queueAutosave();
+        });
+        // when modal field changes, reflect to header input
+        commBuyerName.addEventListener('input', () => {
+          if(buyerNameInput) buyerNameInput.value = commBuyerName.value;
+          generateMessages();
+          queueAutosave();
+        });
+      }
       // Communication message handlers
       qs('#btnEditBuyer').addEventListener('click', () => toggleEdit('msgBuyer', 'msgBuyerDisplay'));
       qs('#btnEditPDC').addEventListener('click', () => toggleEdit('msgPDC', 'msgPDCDisplay'));
