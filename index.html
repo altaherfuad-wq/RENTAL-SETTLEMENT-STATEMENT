@@ -372,7 +372,7 @@
     .indicator-card.total .indicator-icon{background:#eff6ff;border-color:#bfdbfe}
     .indicator-card .indicator-text{display:flex;flex-direction:column;gap:3px}
     /* SC Rate note styling: smaller, lighter, positioned lower in the cell */
-    .sc-rate-note{display:none;color:#9aa6b6;font-size:0.66rem;line-height:1;vertical-align:middle;margin-left:8px;position:relative;top:calc(12px + 1mm);opacity:0.85}
+    .sc-rate-note{display:none;color:#9aa6b6;font-size:0.66rem;line-height:1;vertical-align:middle;margin-left:calc(8px + 5mm);position:relative;top:calc(12px - 2mm);opacity:0.85}
     .indicator-card .indicator-label{font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;font-weight:600}
     .indicator-card .indicator-value{font-size:1.05rem;font-weight:600;color:#1e293b;letter-spacing:-0.01em}
     .collapse-btn{border:1px solid #e2e8f0;background:#ffffff;border-radius:8px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:500;color:#475569;transition:all 0.2s ease;box-shadow:0 1px 3px rgba(15,23,42,0.04)}
@@ -401,9 +401,9 @@
 
     /* Input-with-lock: small inline checkbox inside numeric inputs (left) */
     .input-with-lock{position:relative;display:inline-flex;align-items:center}
-    .input-with-lock .sc-rate-lock-inside{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:4px;border:1px solid rgba(15,23,42,0.12);background:#fff;display:inline-block;position:absolute;left:6px;top:50%;transform:translateY(-50%);cursor:pointer}
+    .input-with-lock .sc-rate-lock-inside{appearance:none;-webkit-appearance:none;width:14px;height:14px;border-radius:3px;border:1px solid rgba(15,23,42,0.12);background:#fff;display:inline-block;position:absolute;left:6px;top:50%;transform:translateY(-50%);cursor:pointer}
     .input-with-lock .sc-rate-lock-inside:checked{background:#1e3a5f;border-color:#1e3a5f}
-    .input-with-lock input[type="number"]{padding-left:32px}
+    .input-with-lock input[type="number"]{padding-left:28px}
 
     /* Buyer name subtle styling: calm, faded (not shiny) */
     /* Softer, non-black muted tone for buyer name */
@@ -1865,7 +1865,7 @@
             <input type="checkbox" id="scRateLockInside" class="sc-rate-lock-inside" title="Lock SC Rate" aria-label="Lock SC Rate">
             <input type="number" id="scRate" min="6" max="20" step="0.01" inputmode="decimal" placeholder="6" value="6" required="">
           </div>
-          <span id="scRateNote" class="muted sc-rate-note" style="display: none;">SC Rate not required</span>
+          <span id="scRateNote" class="muted sc-rate-note" style="display: none; font-size:0.64rem;">SC Rate not required</span>
         </div>
         <div>
           <label for="scTotal">Annual SC <span class="field-emoji" title="Invoice">🧾</span></label>
@@ -4209,7 +4209,7 @@ Examples:
           }
           // If we have a saved scRate value, apply it (but don't override live edits if empty)
           if(typeof prefs.scRate !== 'undefined' && prefs.scRate !== null && scRate){
-            scRate.value = Number(prefs.scRate) || scRate.value || 6;
+            scRate.value = (prefs.scRate !== undefined && prefs.scRate !== null) ? String(prefs.scRate) : (scRate.value || '6');
           }
         }
         if(scBuyerAutoMode && typeof prefs.scBuyerAutoMode !== 'undefined'){
@@ -4327,7 +4327,7 @@ Examples:
                     // Try to restore last saved rate if present
                     try{
                       const raw = localStorage.getItem(TOGGLE_PREFS_KEY);
-                      if(raw){ const prefs = JSON.parse(raw); if(prefs && typeof prefs.scRate !== 'undefined' && prefs.scRate !== null){ rate.value = Number(prefs.scRate) || rate.value || 6; } }
+                      if(raw){ const prefs = JSON.parse(raw); if(prefs && typeof prefs.scRate !== 'undefined' && prefs.scRate !== null){ rate.value = (prefs.scRate !== undefined && prefs.scRate !== null) ? String(prefs.scRate) : (rate.value || '6'); } }
                     }catch(e){/*ignore*/}
                   }
                 }
@@ -4372,11 +4372,10 @@ Examples:
         const clampRate = () => {
           let v = Number(scRateEl.value || 0);
           if(isNaN(v)) v = 6;
-          // Allow decimals, just clamp to range 6-20
+          // Allow decimals, just clamp to range 6-20 but preserve entered precision
           if(v < 6) v = 6;
           if(v > 20) v = 20;
-          // Round to 2 decimal places for cleanliness
-          v = Math.round(v * 100) / 100;
+          // Do not force rounding here; keep the user's exact value
           if(String(scRateEl.value) !== String(v)) scRateEl.value = v;
           // Recalculate and mark dirty
           try{ calculateServiceCharge(); }catch(e){console.warn('calculateServiceCharge failed', e);}
@@ -4715,7 +4714,7 @@ Examples:
           if(savedRate && scRateInput && !scRateFromSavedCase && !isInitializing) {
             // Always fill if empty, or show a subtle indicator if different
             if(!scRateInput.value || sanitizeNumber(scRateInput.value) === 0) {
-              scRateInput.value = savedRate.toFixed(2);
+              scRateInput.value = (typeof savedRate === 'number') ? String(savedRate) : savedRate;
               calculateServiceCharge();
               queueAutosave();
             }
@@ -5702,13 +5701,13 @@ Examples:
         // If not mandatory or toggle unchecked, skip this entry entirely - do not assume any rate
       } else {
         let severity = 'ok';
-        let detail = `AED ${scRate.toFixed(2)}/sq.ft`;
+        let detail = `AED ${qs('#scRate')?.value ?? scRate}/sq.ft`;
         if(scRate < 5){
           severity = 'warn';
-          detail = `AED ${scRate.toFixed(2)}/sq.ft — unusually low rate`;
+          detail = `AED ${qs('#scRate')?.value ?? scRate}/sq.ft — unusually low rate`;
         } else if(scRate > 50){
           severity = 'warn';
-          detail = `AED ${scRate.toFixed(2)}/sq.ft — unusually high rate`;
+          detail = `AED ${qs('#scRate')?.value ?? scRate}/sq.ft — unusually high rate`;
         } else if(scRate > 100){
           severity = 'critical';
           detail = `AED ${scRate.toFixed(2)}/sq.ft — verify, rate seems too high`;
