@@ -1153,14 +1153,293 @@
     }
 
     @media print{
-      body{background:white;padding:0}
-      .actions, .head .brand p, .btn, .import-area, .hint, .comm-grid, #commSectionWrapper, #commModal {display:none !important}
-      .card, table, .summary{box-shadow:none;border:none}
-      .wrap{padding:18px}
-      .grid{grid-template-columns:repeat(3,1fr) !important; gap:8px !important;}
-      #timeline-container, .timeline-labels { display:none !important; }
-      table th, table td{padding:6px 4px; font-size:0.85rem;}
+      body{background:white !important;padding:0;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+      
+      /* Hide non-essential UI elements */
+      .actions, .head .brand p, .import-area, .hint, .comm-grid, #commSectionWrapper, #commModal,
+      .right-vertical-sidebar, .status-pill-center, .health-trigger, .collapse-btn, .icon-btn-elegant,
+      .autosave-indicator, .floating-actions, #rightVerticalSidebar, .modal, .modal-backdrop,
+      .case-notes-icon, .mini-toggle, .special-import, .import-actions, .cheque-ribbon-separator,
+      #refreshPageBtn, #floatingResetBtn, #darkModeToggle, #healthPanelBtn, #calcBtn, #openCommModalSidebar,
+      #verifyAiBtn, .field-emoji, .cutoff-value-flag, .sc-value-flag, .lease-duration-badge,
+      .cheque-cleared-icon, datalist {display:none !important}
+      
+      /* Show all buttons as hidden except labels */
+      .btn {display:none !important}
+      
+      /* Card and layout styling */
+      .card, table, .summary{box-shadow:none !important;border:1px solid #ccc !important;page-break-inside:avoid;}
+      .wrap{padding:12px !important;max-width:100% !important;}
+      .grid{grid-template-columns:repeat(3,1fr) !important; gap:6px !important;}
+      
+      /* Header/Brand styling for print */
+      .head .brand{background:#1e3a5f !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;padding:10px 16px !important;}
+      .head .brand h1{color:white !important;font-size:1.1rem !important;}
+      #buildingName{background:white !important;color:#1e3a5f !important;font-weight:700 !important;font-size:1rem !important;border:none !important;}
+      
+      /* Make all inputs display their values clearly for review */
+      input, select, textarea {
+        border:1px solid #999 !important;
+        background:white !important;
+        color:#000 !important;
+        font-size:0.85rem !important;
+        padding:4px 6px !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+      }
+      input[readonly] {
+        background:#f5f5f5 !important;
+        border:1px dashed #aaa !important;
+      }
+      input[type="checkbox"] {
+        width:14px !important;
+        height:14px !important;
+        -webkit-print-color-adjust:exact !important;
+      }
+      
+      /* Labels styling */
+      label {
+        font-size:0.75rem !important;
+        font-weight:600 !important;
+        color:#333 !important;
+        display:block !important;
+        margin-bottom:2px !important;
+      }
+      
+      /* Grid field containers */
+      .grid > div {
+        padding:6px !important;
+        border:1px solid #e0e0e0 !important;
+        border-radius:4px !important;
+        background:#fafafa !important;
+        page-break-inside:avoid;
+      }
+      
+      /* Section titles */
+      .section-title {
+        font-size:0.95rem !important;
+        font-weight:700 !important;
+        color:#1e3a5f !important;
+        border-bottom:2px solid #1e3a5f !important;
+        padding-bottom:4px !important;
+        margin-bottom:8px !important;
+      }
+      
+      /* Cheques section - expand for review */
+      .collapsible-body, .collapsible-body.collapsed {
+        display:block !important;
+        height:auto !important;
+        overflow:visible !important;
+        opacity:1 !important;
+      }
+      .cheques-row, #rentalChequesRow, #pdcChequesRow {
+        display:grid !important;
+        grid-template-columns:repeat(2, 1fr) !important;
+        gap:6px !important;
+      }
+      .chq {
+        display:block !important;
+        border:1px solid #bbb !important;
+        padding:5px 6px !important;
+        border-radius:4px !important;
+        background:#fff !important;
+        page-break-inside:avoid;
+        font-size:0.75rem !important;
+      }
+      .chq[style*="display: none"] {display:none !important;}
+      .chq .label {
+        font-weight:700 !important;
+        color:#1e3a5f !important;
+        font-size:0.7rem !important;
+        margin-bottom:2px !important;
+      }
+      .chq input {
+        font-size:0.7rem !important;
+        padding:2px 4px !important;
+        height:auto !important;
+        min-height:18px !important;
+      }
+      .chq.cleared {
+        background:#e8f5e9 !important;
+        border-color:#4caf50 !important;
+      }
+      .cheque-meta, .cheque-info-row {
+        margin-top:2px !important;
+        gap:4px !important;
+      }
+      
+      /* Hide indicator cards (cheque count & total value badges) in print */
+      .indicator-card, .section-indicators, .indicator-stack {
+        display:none !important;
+      }
+      
+      /* Totals box - compact for print */
+      .totals {
+        display:flex !important;
+        flex-wrap:wrap !important;
+        gap:8px !important;
+        margin-top:6px !important;
+      }
+      .totals, .total-box {
+        background:#f0f4f8 !important;
+        border:1px solid #ccc !important;
+        padding:4px 8px !important;
+        font-weight:600 !important;
+        font-size:0.75rem !important;
+      }
+      .total-box {
+        display:inline-block !important;
+      }
+      
+      /* Results table */
+      #resultsCard {display:block !important;}
+      table th, table td{padding:4px 6px !important; font-size:0.8rem !important; border:1px solid #ccc !important;}
+      table th {background:#1e3a5f !important; color:white !important; -webkit-print-color-adjust:exact !important;}
+      
+      /* Summary section */
+      #summarySection {display:block !important;}
+      .summary {
+        background:#f8f9fa !important;
+        padding:12px !important;
+        border:1px solid #ccc !important;
+      }
+      
+      /* Timeline - hide for print */
+      #timeline-container, .timeline-labels, #timeline-sc-container, #sc-timeline-labels { display:none !important; }
+      .timeline-wrapper {display:none !important;}
+      
+      /* Indicators */
+      .indicator-card {
+        border:1px solid #ddd !important;
+        padding:6px 10px !important;
+        background:#fff !important;
+      }
+      .indicator-value {
+        font-weight:700 !important;
+        color:#1e3a5f !important;
+      }
+      
+      /* Page breaks */
+      .cheques-section {page-break-before:auto; page-break-inside:avoid;}
+      #resultsCard {page-break-before:always;}
+      
+      /* Print header info */
+      .brand-top {
+        display:flex !important;
+        flex-direction:column !important;
+        gap:4px !important;
+      }
+      
+      /* Buyer name field */
+      #buyerName {
+        border:1px solid #999 !important;
+        background:white !important;
+      }
+      
+      /* Muted text */
+      .muted {
+        font-size:0.7rem !important;
+        color:#666 !important;
+      }
+      
+      /* Section dividers */
+      hr, .section-divider {
+        border:none !important;
+        border-top:1px solid #ccc !important;
+        margin:8px 0 !important;
+      }
+      
+      /* Print-specific header */
+      .head::before {
+        content:"📋 RENTAL SETTLEMENT - DATA ENTRY REVIEW" !important;
+        display:block !important;
+        text-align:center !important;
+        font-size:0.85rem !important;
+        font-weight:700 !important;
+        color:#1e3a5f !important;
+        padding:8px !important;
+        border:2px solid #1e3a5f !important;
+        border-radius:6px !important;
+        margin-bottom:12px !important;
+        background:#f0f4f8 !important;
+      }
+      
+      /* Print review summary box */
+      .print-review-summary {
+        display:block !important;
+        background:#fff !important;
+        border:2px solid #1e3a5f !important;
+        border-radius:8px !important;
+        padding:12px 16px !important;
+        margin-bottom:16px !important;
+        page-break-inside:avoid;
+      }
+      .print-review-summary h3 {
+        margin:0 0 8px 0 !important;
+        font-size:0.9rem !important;
+        color:#1e3a5f !important;
+        border-bottom:1px solid #ccc !important;
+        padding-bottom:4px !important;
+      }
+      .print-review-grid {
+        display:grid !important;
+        grid-template-columns:repeat(4, 1fr) !important;
+        gap:8px !important;
+      }
+      .print-review-item {
+        background:#f8f9fa !important;
+        padding:6px 8px !important;
+        border-radius:4px !important;
+        border:1px solid #e0e0e0 !important;
+      }
+      .print-review-item .label {
+        font-size:0.65rem !important;
+        color:#666 !important;
+        text-transform:uppercase !important;
+        letter-spacing:0.5px !important;
+      }
+      .print-review-item .value {
+        font-size:0.85rem !important;
+        font-weight:700 !important;
+        color:#1e3a5f !important;
+      }
+      
+      /* Show date/time stamp on print */
+      .print-timestamp {
+        display:block !important;
+        text-align:right !important;
+        font-size:0.7rem !important;
+        color:#888 !important;
+        margin-bottom:4px !important;
+      }
+      
+      /* Footer for print */
+      @page {
+        margin:0.5in;
+        size:A4;
+      }
+      
+      /* Print footer */
+      .wrap::after {
+        content:"Printed for review purposes only - Please verify all data entries" !important;
+        display:block !important;
+        text-align:center !important;
+        font-size:0.7rem !important;
+        color:#888 !important;
+        padding-top:16px !important;
+        margin-top:16px !important;
+        border-top:1px dashed #ccc !important;
+      }
     }
+    
+    /* Hide print-only elements in normal view (outside print media query) */
+    .print-review-summary {
+      display:none !important;
+    }
+    .print-timestamp {
+      display:none !important;
+    }
+    
     input.invalid, textarea.invalid { border-color: var(--danger) !important; }
     
     /* Validation Checkmarks */
@@ -1787,6 +2066,46 @@
             <h1 id="pageTitle" style="font-size:1.25rem;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;"><span class="page-title-strong">Unit 411</span> — MUHAMMED</h1>
             <button type="button" class="case-notes-icon" id="caseNotesBtn" title="Case Notes (Internal - Not Exported)" aria-label="Open case notes" style="flex-shrink:0;">📝</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Print-only Review Summary Section -->
+    <div class="print-review-summary" id="printReviewSummary">
+      <div class="print-timestamp" id="printTimestamp"></div>
+      <h3>📋 Quick Data Summary for Review</h3>
+      <div class="print-review-grid">
+        <div class="print-review-item">
+          <div class="label">Building</div>
+          <div class="value" id="printBuilding">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Unit</div>
+          <div class="value" id="printUnit">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Tenant</div>
+          <div class="value" id="printTenant">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Buyer</div>
+          <div class="value" id="printBuyer">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Lease Period</div>
+          <div class="value" id="printLeasePeriod">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Handover Date</div>
+          <div class="value" id="printHandover">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Total Rent</div>
+          <div class="value" id="printRent">—</div>
+        </div>
+        <div class="print-review-item">
+          <div class="label">Security Deposit</div>
+          <div class="value" id="printDeposit">—</div>
         </div>
       </div>
     </div>
@@ -4524,6 +4843,9 @@ Examples:
     // 5. Buyer SC Portion = Daily SC × Buyer Responsibility Days
     // Note: Buyer reimburses seller only for the days the seller already paid
     function calculateServiceCharge() {
+      // Check if SC Master Toggle is disabled - if so, don't touch the serviceCharge field at all
+      const scMasterEnabled = qs('#scMasterToggle')?.checked ?? false;
+      
       const area = sanitizeNumber(qs('#scArea')?.value);
       const rate = sanitizeNumber(qs('#scRate')?.value);
       const scTotalEl = qs('#scTotal');
@@ -4533,8 +4855,14 @@ Examples:
       // Check auto mode FIRST before any calculations
       const autoMode = isScBuyerAutoMode();
       
+      // If SC Master is disabled, preserve manual entry and exit early
+      if(!scMasterEnabled) {
+        console.log('📊 calculateServiceCharge: SC Master disabled, preserving manual entry');
+        return;
+      }
+      
       // If in manual mode, never touch the serviceCharge field - just update total/daily SC
-      console.log('📊 calculateServiceCharge called:', { area, rate, autoMode });
+      console.log('📊 calculateServiceCharge called:', { area, rate, autoMode, scMasterEnabled });
 
       // Respect user toggles: if Unit Area or SC Rate are NOT required,
       // do not calculate Annual Service Charge and do not assume a rate.
@@ -8972,6 +9300,8 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       const hasChequeGap = rentAnnual > 0 && rentalTotals.total > 0 && chequeDiffAbs >= 1;
       if(hasChequeGap){
         const reasonMeta = chequeGapJustification.reason ? GAP_REASON_META[chequeGapJustification.reason] : null;
+        // Always show the difference amount
+        const diffDisplay = `${money(chequeDiffAbs)} ${chequeDiff > 0 ? 'over' : 'short'}`;
         if(reasonMeta){
           if(reasonMeta.severityImpact === 'reduce' && chequesState === 'alert' && chequeImportWarnings.length === 0){
             chequesState = 'warn';
@@ -8979,16 +9309,17 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
           if(reasonMeta.severityImpact === 'keep'){
             chequesState = 'alert';
           }
-          chequeText = `✔ Gap justified: ${reasonMeta.short}`;
+          // Keep the difference amount visible along with the justification
+          chequeText = `✔ ${diffDisplay} — ${reasonMeta.short}`;
           const gapNoteSnippet = (chequeGapJustification.note || '').trim();
           if(gapNoteSnippet){
-            const preview = gapNoteSnippet.length > 30 ? `${gapNoteSnippet.slice(0,30)}…` : gapNoteSnippet;
-            chequeText += ` — ${preview}`;
+            const preview = gapNoteSnippet.length > 25 ? `${gapNoteSnippet.slice(0,25)}…` : gapNoteSnippet;
+            chequeText += ` (${preview})`;
           }
-          chequeText += ' (tap to edit)';
+          chequeText += ' ✎';
         } else {
           // Gap exists but not justified - show prompt to click
-          chequeText = `⚠️ ${money(chequeDiffAbs)} ${chequeDiff > 0 ? 'over' : 'short'} — tap to clarify`;
+          chequeText = `⚠️ ${diffDisplay} — tap to clarify`;
           chequesState = 'warn';
         }
       }
@@ -9288,7 +9619,61 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         sessionStorage.setItem('rs_scrollPos', window.scrollY.toString());
         location.reload();
       });
-      qs('#printBtn').addEventListener('click', () => window.print());
+      qs('#printBtn').addEventListener('click', () => {
+        // Populate print review summary before printing
+        preparePrintReview();
+        window.print();
+      });
+      
+      // Prepare print review summary with current form data
+      function preparePrintReview() {
+        const formatDate = (dateStr) => {
+          if (!dateStr) return '—';
+          const d = new Date(dateStr);
+          return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        };
+        
+        const formatCurrency = (val) => {
+          const num = parseFloat(val) || 0;
+          return 'AED ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+        
+        // Update timestamp
+        const timestampEl = qs('#printTimestamp');
+        if (timestampEl) {
+          timestampEl.textContent = 'Printed: ' + new Date().toLocaleString('en-GB', { 
+            day: '2-digit', month: 'short', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit' 
+          });
+        }
+        
+        // Populate summary fields
+        const printBuilding = qs('#printBuilding');
+        const printUnit = qs('#printUnit');
+        const printTenant = qs('#printTenant');
+        const printBuyer = qs('#printBuyer');
+        const printLeasePeriod = qs('#printLeasePeriod');
+        const printHandover = qs('#printHandover');
+        const printRent = qs('#printRent');
+        const printDeposit = qs('#printDeposit');
+        
+        if (printBuilding) printBuilding.textContent = qs('#buildingName')?.value || '—';
+        if (printUnit) printUnit.textContent = qs('#unitNo')?.value || '—';
+        if (printTenant) printTenant.textContent = qs('#tenantName')?.value || '—';
+        if (printBuyer) printBuyer.textContent = qs('#buyerName')?.value || '—';
+        
+        const leaseStartVal = qs('#leaseStart')?.value;
+        const leaseEndVal = qs('#leaseEnd')?.value;
+        if (printLeasePeriod) {
+          printLeasePeriod.textContent = leaseStartVal && leaseEndVal 
+            ? formatDate(leaseStartVal) + ' → ' + formatDate(leaseEndVal)
+            : '—';
+        }
+        
+        if (printHandover) printHandover.textContent = formatDate(qs('#handoverDate')?.value);
+        if (printRent) printRent.textContent = formatCurrency(qs('#rent')?.value);
+        if (printDeposit) printDeposit.textContent = formatCurrency(qs('#securityDeposit')?.value);
+      }
       qs('#excelBtn').addEventListener('click', exportToExcel);
       qs('#previewBtn').addEventListener('click', previewPDF);
       qs('#pdfBtn').addEventListener('click', exportToPDF);
