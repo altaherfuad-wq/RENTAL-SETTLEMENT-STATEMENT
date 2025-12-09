@@ -6202,13 +6202,21 @@ Examples:
         } else {
           b += `Net Amount Due from You: ${formattedNet}\n\n`;
         }
-        b += `Cheques to Collect:\n`;
-        b += chequeBreakdown;
-        // Only show Total line if there are mixed types (PDCs + past-dated) - avoid redundancy for single type
-        if (postCount > 0 && pastCount > 0) {
-          b += `\nTotal Cheques: ${totalLabel} | Total Value: ${formattedPDC}\n\n`;
-        } else {
-          b += `\n`;
+        // Include a 'Cheques to Collect' section only when there are cheques
+        if (totalCheques > 0) {
+          b += `Cheques to Collect:\n`;
+          if (chequeBreakdown.trim()) {
+            b += chequeBreakdown;
+          } else {
+            // Fallback to a simple composition line when detailed breakdown isn't available
+            b += `• ${composition}: ${formattedPDC}\n`;
+          }
+          // Only show Total line if there are mixed types (PDCs + past-dated) - avoid redundancy for single type
+          if (postCount > 0 && pastCount > 0) {
+            b += `\nTotal Cheques: ${totalLabel} | Total Value: ${formattedPDC}\n\n`;
+          } else {
+            b += `\n`;
+          }
         }
         b += `COLLECTION DETAILS\n`;
         // Dynamic collection message based on what's being collected
