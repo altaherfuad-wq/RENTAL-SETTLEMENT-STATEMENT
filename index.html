@@ -7769,8 +7769,22 @@ Examples:
       doc.text('AYAT Properties | Ayat Tower, R Floor, Al Majaz 3, Sharjah | Tel: 06 523 3112 | Mon-Fri: 9AM-4PM | Sat: 9AM-1PM', left, pageHeight - 8);
       doc.text(`Generated: ${new Date().toLocaleString('en-GB')}`, pageWidth - left, pageHeight - 8, {align:'right'});
       
-      // Use reference number as filename for easy search
-      const buyerFilename = `${refNum}_Buyer.pdf`;
+      // Use unit + buyer name as filename (sanitized). Fallbacks: unit-only, buyer-only, then refNum.
+      const sanitizeForFile = s => (s||'').toString().trim().replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+      const unitRaw = qs('#unitNo')?.value || '';
+      const buyerRaw = qs('#buyerName')?.value || '';
+      const unitSafe = sanitizeForFile(unitRaw);
+      const buyerSafe = sanitizeForFile(buyerRaw);
+      let buyerFilename = '';
+      if(unitSafe && buyerSafe) {
+        buyerFilename = `${unitSafe}_${buyerSafe}.pdf`;
+      } else if(unitSafe) {
+        buyerFilename = `${unitSafe}.pdf`;
+      } else if(buyerSafe) {
+        buyerFilename = `${buyerSafe}.pdf`;
+      } else {
+        buyerFilename = `${sanitizeForFile(refNum) || 'Buyer'}.pdf`;
+      }
       doc.save(buyerFilename);
       markDocsReady(true);
     }
@@ -8773,15 +8787,24 @@ Examples:
     }
     
     function generateSmartFilename(extension) {
-      const building = (buildingName.value || '').replace(/[^a-zA-Z0-9]/g, '-');
-      const unit = (unitNo.value || 'Unit').replace(/[^a-zA-Z0-9]/g, '-');
-      const tenant = (tenantName.value || '').split(' ')[0].replace(/[^a-zA-Z0-9]/g, '-') || 'Tenant';
+      const unitRaw = (unitNo.value || '').trim();
+      const tenantRaw = (tenantName.value || '').trim();
       const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      
-      if(building) {
-        return `Settlement_${building}_${unit}_${tenant}_${date}.${extension}`;
+
+      const sanitize = s => s.replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+
+      const unit = unitRaw ? sanitize(unitRaw) : '';
+      // use first word of tenant as short name (common pattern), fallback to full name if single word
+      const tenant = tenantRaw ? sanitize(tenantRaw.split(' ')[0]) : '';
+
+      if(unit && tenant) {
+        return `${unit}_${tenant}.${extension}`;
+      } else if(unit) {
+        return `${unit}.${extension}`;
+      } else if(tenant) {
+        return `${tenant}.${extension}`;
       } else {
-        return `Settlement_${unit}_${tenant}_${date}.${extension}`;
+        return `Settlement_${date}.${extension}`;
       }
     }
 
