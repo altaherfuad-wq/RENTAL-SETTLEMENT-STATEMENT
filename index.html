@@ -440,6 +440,22 @@
     .summary-label{font-size:0.52rem;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.6px;font-weight:500;color:#64748b}
     .summary-amount{font-size:1.2rem;font-weight:700;color:#059669;margin-bottom:1px}
     .summary-direction{font-size:0.6rem;font-weight:600;color:#10b981;text-transform:uppercase;letter-spacing:0.3px}
+    .new-owner-info{margin-top:8px;font-size:0.78rem;color:#475569;line-height:1.4}
+    .new-owner-info strong{color:#0f172a;font-weight:600}
+    [data-theme="dark"] .new-owner-info{color:#94a3b8}
+    [data-theme="dark"] .new-owner-info strong{color:#f1f5f9}
+    /* Stale Data Warning - shown when inputs changed but calculation not updated */
+    .stale-data-warning{display:none;background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);color:white;padding:10px 16px;border-radius:8px;margin-bottom:12px;font-weight:600;font-size:0.9rem;text-align:center;animation:staleWarningPulse 1.5s infinite;border:2px solid #991b1b}
+    .stale-data-warning.visible{display:block}
+    .stale-data-warning .warning-icon{font-size:1.2rem;margin-right:8px}
+    .stale-data-warning .recalc-btn{background:white;color:#dc2626;border:none;padding:4px 12px;border-radius:4px;font-weight:700;cursor:pointer;margin-left:12px;font-size:0.85rem}
+    .stale-data-warning .recalc-btn:hover{background:#fef2f2}
+    @keyframes staleWarningPulse{0%,100%{opacity:1}50%{opacity:0.85}}
+    [data-theme="dark"] .stale-data-warning{background:linear-gradient(135deg,#991b1b 0%,#7f1d1d 100%);border-color:#dc2626}
+    /* Mark results section as stale */
+    .results-stale #resultsCard{opacity:0.5;position:relative}
+    .results-stale #resultsCard::after{content:'⚠️ DATA CHANGED - RECALCULATE';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#dc2626;color:white;padding:12px 24px;border-radius:8px;font-weight:700;font-size:1rem;z-index:100;white-space:nowrap}
+    .results-stale #summarySection{opacity:0.5;pointer-events:none}
     .summary-notes{display:grid;grid-template-columns:1fr;gap:8px}
     .inline-card-note{font-size:0.8rem;line-height:1.5;color:#0f172a}
     .note-panel{background:#fafbfc;border-radius:6px;border:1px solid #e5e7eb;overflow:hidden}
@@ -564,6 +580,25 @@
     .mini-toggle:hover{background:#e2e8f0;color:#64748b}
     .mini-toggle input[type="checkbox"]{width:10px;height:10px;cursor:pointer;accent-color:#3b82f6;margin:0}
     .card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:18px;}
+    
+    /* Empty Unit Banner - simple but distinctive indicator */
+    .empty-unit-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:#f59e0b;color:#78350f;padding:8px 16px;text-align:center;font-weight:700;font-size:0.95rem;letter-spacing:0.3px;border-bottom:3px solid #d97706}
+    .empty-unit-banner.visible{display:block}
+    .empty-unit-banner .banner-icon{display:inline;margin:0 8px}
+    .empty-unit-banner .banner-text{display:inline}
+    .empty-unit-banner .banner-title{display:inline;text-transform:uppercase}
+    .empty-unit-banner .banner-subtitle{display:none}
+    [data-theme="dark"] .empty-unit-banner{background:#b45309;color:#fef3c7;border-bottom-color:#92400e}
+    /* Empty unit mode - visual changes to the page */
+    body.empty-unit-mode{padding-top:45px}
+    body.empty-unit-mode .brand-elegant{border-left:5px solid #f59e0b !important}
+    body.empty-unit-mode #tenantName{background:#fef3c7 !important;border:2px solid #f59e0b !important;font-weight:700;color:#92400e}
+    [data-theme="dark"] body.empty-unit-mode #tenantName{background:#78350f !important;color:#fef3c7 !important;border-color:#d97706 !important}
+    /* Empty unit mode - mark non-required fields (lease dates, rent, security deposit) - handover stays active for SC calculation */
+    body.empty-unit-mode #leaseStart,body.empty-unit-mode #leaseEnd,body.empty-unit-mode #rent,body.empty-unit-mode #securityDeposit{background:#f5f5f5 !important;border:1px dashed #d1d5db !important;color:#9ca3af !important;opacity:0.7}
+    body.empty-unit-mode label[for="leaseStart"],body.empty-unit-mode label[for="leaseEnd"],body.empty-unit-mode label[for="rent"],body.empty-unit-mode label[for="securityDeposit"]{color:#9ca3af !important;text-decoration:line-through;opacity:0.7}
+    [data-theme="dark"] body.empty-unit-mode #leaseStart,[data-theme="dark"] body.empty-unit-mode #leaseEnd,[data-theme="dark"] body.empty-unit-mode #rent,[data-theme="dark"] body.empty-unit-mode #securityDeposit{background:#1e293b !important;border-color:#475569 !important;color:#64748b !important}
+    [data-theme="dark"] body.empty-unit-mode label[for="leaseStart"],[data-theme="dark"] body.empty-unit-mode label[for="leaseEnd"],[data-theme="dark"] body.empty-unit-mode label[for="rent"],[data-theme="dark"] body.empty-unit-mode label[for="securityDeposit"]{color:#64748b !important}
     
     .grid { display:grid; grid-template-columns:0.75fr 1.2fr 1.05fr 0.9fr 1fr; gap:10px; }
     .grid > div:not([style*="grid-column"]) { border: 1px solid var(--border); border-radius: 10px; padding: 8px; background: #fbfeff; }
@@ -1154,6 +1189,10 @@
 
     @media print{
       body{background:white !important;padding:0;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+      
+      /* Empty Unit Banner - show in print */
+      body.empty-unit-mode{padding-top:0 !important}
+      .empty-unit-banner.visible{display:block !important;position:relative !important;background:#f59e0b !important;color:#78350f !important;padding:6px 12px !important;font-size:0.9rem !important;border-bottom:2px solid #d97706 !important;margin-bottom:8px !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
       
       /* Hide non-essential UI elements */
       .actions, .head .brand p, .import-area, .hint, .comm-grid, #commSectionWrapper, #commModal,
@@ -2070,6 +2109,13 @@
       </div>
     </div>
 
+    <!-- Empty Unit Banner - shown when tenant is "empty" -->
+    <div class="empty-unit-banner" id="emptyUnitBanner" role="alert">
+      <span class="banner-icon">🏠</span>
+      <span class="banner-text"><span class="banner-title">Empty Unit</span> — No Tenant</span>
+      <span class="banner-icon">🏠</span>
+    </div>
+
     <!-- Print-only Review Summary Section -->
     <div class="print-review-summary" id="printReviewSummary">
       <div class="print-timestamp" id="printTimestamp"></div>
@@ -2499,6 +2545,13 @@
 
     <hr class="section-divider tight">
 
+    <!-- Stale Data Warning - shows when inputs changed after calculation -->
+    <div class="stale-data-warning" id="staleDataWarning" role="alert">
+      <span class="warning-icon">⚠️</span>
+      <span>DATA CHANGED! Results below may not match current inputs.</span>
+      <button class="recalc-btn" onclick="document.getElementById('calcBtn').click()">🔄 RECALCULATE NOW</button>
+    </div>
+
     <div class="card card-scroll is-hidden" id="resultsCard">
       <table id="resultsTable">
         <thead>
@@ -2554,6 +2607,7 @@
           <div class="muted summary-label">Final Settlement Amount</div>
           <div id="summaryTotal" class="net summary-amount">AED 0.00</div>
           <div id="directionText" class="direction summary-direction"></div>
+          <div id="newOwnerInfo" class="new-owner-info"></div>
         </div>
 
         <div class="summary-notes">
@@ -3337,6 +3391,48 @@ Examples:
     const summaryTotal = qs('#summaryTotal'), directionText = qs('#directionText'), notesEl = qs('#notes');
     const copyReconciliation = qs('#copyReconciliation'), tableUnitHeader = qs('#tableUnitHeader');
     const bulkImport = qs('#bulkImport');
+    const staleDataWarning = qs('#staleDataWarning');
+
+    // Track if calculation is stale (inputs changed after last calculation)
+    let lastCalculationHash = null;
+    let calculationIsFresh = false;
+    
+    function getInputsHash() {
+      // Create a hash of all key input values to detect changes
+      const vals = [
+        unitNo?.value || '',
+        tenantName?.value || '',
+        leaseStart?.value || '',
+        leaseEnd?.value || '',
+        handoverDate?.value || '',
+        rentInput?.value || '',
+        serviceCharge?.value || '',
+        securityDeposit?.value || '',
+        qs('#scArea')?.value || '',
+        qs('#scRate')?.value || ''
+      ];
+      // Add PDC cheque values
+      qsa('#pdcChequesRow input[type="number"]').forEach(inp => vals.push(inp.value || '0'));
+      return vals.join('|');
+    }
+    
+    function markCalculationFresh() {
+      lastCalculationHash = getInputsHash();
+      calculationIsFresh = true;
+      if(staleDataWarning) staleDataWarning.classList.remove('visible');
+      document.body.classList.remove('results-stale');
+    }
+    
+    function checkIfDataStale() {
+      if(!calculationIsFresh || !lastCalculationHash) return; // No calculation done yet
+      const currentHash = getInputsHash();
+      if(currentHash !== lastCalculationHash) {
+        // Data changed - mark as stale
+        if(staleDataWarning) staleDataWarning.classList.add('visible');
+        document.body.classList.add('results-stale');
+        calculationIsFresh = false;
+      }
+    }
 
     // Trigger ribbon updates when SC toggles, buyer SC, or dates change
     qs('#scFieldsMandatory')?.addEventListener('change', updateHealthRibbon);
@@ -3344,6 +3440,22 @@ Examples:
     qs('#leaseStart')?.addEventListener('change', updateHealthRibbon);
     qs('#leaseEnd')?.addEventListener('change', updateHealthRibbon);
     qs('#handoverDate')?.addEventListener('change', updateHealthRibbon);
+    
+    // Track stale data - listen to key inputs for changes
+    const staleCheckInputs = [unitNo, tenantName, leaseStart, leaseEnd, handoverDate, rentInput, serviceCharge, securityDeposit, qs('#scArea'), qs('#scRate')];
+    staleCheckInputs.forEach(inp => {
+      if(inp) {
+        inp.addEventListener('input', checkIfDataStale);
+        inp.addEventListener('change', checkIfDataStale);
+      }
+    });
+    
+    // Also listen to PDC cheques section for changes (using event delegation)
+    if(pdcChequesRow) {
+      pdcChequesRow.addEventListener('input', checkIfDataStale);
+      pdcChequesRow.addEventListener('change', checkIfDataStale);
+    }
+    
     const pdcSectionHint = qs('#pdcSectionHint'); // New element for feedback
     const autosaveStatus = qs('#autosaveStatus');
     const autosaveLabel = qs('#autosaveLabel');
@@ -4042,11 +4154,23 @@ Examples:
         const selectedCase = cases[caseId];
         console.log('🔵 loadCase - case data:', { building: selectedCase.data?.buildingName, unit: selectedCase.data?.unitNo, tenant: selectedCase.data?.tenantName });
         clearDismissedHealthItems(); // Clear dismissed health items when loading new case
-        // Hide results section to prevent confusion with old data
+        // Hide results section and CLEAR all calculation data to prevent confusion with old data
         setResultsVisibility(false);
         if(resultsCard) resultsCard.classList.add('is-hidden');
         if(resultsDivider) resultsDivider.classList.add('is-hidden');
         if(summarySection) summarySection.style.display = 'none';
+        // Clear the results table and summary notes from previous case
+        if(resultsBody) resultsBody.innerHTML = '<tr><td colspan="13" class="center muted table-placeholder">Click Calculate to see results</td></tr>';
+        if(notesEl) notesEl.innerHTML = '';
+        if(summaryTotal) summaryTotal.textContent = 'AED 0.00';
+        if(directionText) { directionText.textContent = ''; directionText.style.color = ''; }
+        const newOwnerInfoEl = qs('#newOwnerInfo');
+        if(newOwnerInfoEl) newOwnerInfoEl.innerHTML = '';
+        // Clear stale data tracking - new case means no calculation yet
+        lastCalculationHash = null;
+        calculationIsFresh = false;
+        if(staleDataWarning) staleDataWarning.classList.remove('visible');
+        document.body.classList.remove('results-stale');
         // Set the active case first and suppress autosave while we restore UI/state
         console.log('🔵 Setting currentCaseId to:', caseId, '(previous:', currentCaseId, ')');
         currentCaseId = caseId;
@@ -4073,6 +4197,8 @@ Examples:
         console.log('🔵 Final DOM check:', { building: buildingName?.value, unit: unitNo?.value, tenant: tenantName?.value });
         showToast(`Loaded: ${cases[caseId].name}`);
         updateHealthRibbon();
+        // Check if this is an empty unit and show/hide banner accordingly
+        if(typeof window.checkEmptyUnitMode === 'function') window.checkEmptyUnitMode();
         return true;
       } catch(e) {
         console.error('Load case failed:', e);
@@ -4467,6 +4593,10 @@ Examples:
         updateAutosaveMeta(state.timestamp ? 'Recovered autosave' : null);
         setAutosaveIndicator('saved','State restored');
         showToast('Previous data restored');
+        // Check if restored state has empty tenant - show banner
+        setTimeout(function() {
+          if(typeof window.checkEmptyUnitMode === 'function') window.checkEmptyUnitMode();
+        }, 150);
       } catch(e) {
         console.error('Auto-load failed:', e);
       }
@@ -6732,16 +6862,27 @@ Examples:
 
     function calculate(silentMode = false){
       try {
+        // Check if tenant is "empty" (case insensitive) - skip most validations, no rental cutoff
+        const tenantVal = tenantName.value.trim().toLowerCase();
+        const isEmptyTenant = tenantVal === 'empty';
+        
         // Validation: Check if all required fields are filled
         const missingFields = [];
         if(!unitNo.value.trim()) missingFields.push('Unit Number');
         if(!tenantName.value.trim()) missingFields.push('Tenant Name');
-        if(!leaseStart.value) missingFields.push('Lease Start');
-        if(!leaseEnd.value) missingFields.push('Lease End');
-        if(!rentInput.value || sanitizeNumber(rentInput.value) <= 0) missingFields.push('Total Contract Rent (AED)');
-        if(!handoverDate.value) missingFields.push('Handover / Cutoff Date');
-        if(securityDeposit.value === '' || sanitizeNumber(securityDeposit.value) < 0) missingFields.push('Security Deposit');
-        // Only require SC fields if mandatory toggle is on
+        // For "empty" tenant: skip lease dates, rent, security deposit validation
+        // But handover date is still needed for SC calculation
+        if(!isEmptyTenant) {
+          if(!leaseStart.value) missingFields.push('Lease Start');
+          if(!leaseEnd.value) missingFields.push('Lease End');
+          if(!rentInput.value || sanitizeNumber(rentInput.value) <= 0) missingFields.push('Total Contract Rent (AED)');
+          if(!handoverDate.value) missingFields.push('Handover / Cutoff Date');
+          if(securityDeposit.value === '' || sanitizeNumber(securityDeposit.value) < 0) missingFields.push('Security Deposit');
+        } else {
+          // Empty tenant still needs handover date for SC calculation
+          if(!handoverDate.value) missingFields.push('Handover / Cutoff Date (for SC calculation)');
+        }
+        // Only require SC fields if mandatory toggle is on (applies to both empty and non-empty)
         if(isScFieldsMandatory()) {
           if(!qs('#scArea').value || sanitizeNumber(qs('#scArea').value) <= 0) missingFields.push('Unit Area (sq.ft)');
           if(!qs('#scRate').value || sanitizeNumber(qs('#scRate').value) <= 0) missingFields.push('$/sq.ft');
@@ -6754,20 +6895,25 @@ Examples:
         }
         
         const ls = leaseStart.value, le = leaseEnd.value, ho = handoverDate.value;
-        const rent = sanitizeNumber(rentInput.value), sc = sanitizeNumber(serviceCharge.value), dep = sanitizeNumber(securityDeposit.value);
+        const rent = sanitizeNumber(rentInput.value) || 0;
+        const sc = sanitizeNumber(serviceCharge.value), dep = sanitizeNumber(securityDeposit.value) || 0;
         
-        if (new Date(ls) > new Date(le)) {
-          if(!silentMode) alert('Lease Start must be before Lease End');
-          return;
-        }
-        if (new Date(ho) > new Date(le)) {
-          if(!silentMode) alert('Handover Date cannot be after Lease End');
-          return;
+        // Only validate date logic if tenant is NOT "empty"
+        if (!isEmptyTenant) {
+          if (new Date(ls) > new Date(le)) {
+            if(!silentMode) alert('Lease Start must be before Lease End');
+            return;
+          }
+          if (new Date(ho) > new Date(le)) {
+            if(!silentMode) alert('Handover Date cannot be after Lease End');
+            return;
+          }
         }
 
-        const totalDays = daysInclusive(ls, le);
-        const sellerDays = Math.max(0, daysInclusive(ls, ho));
-        const buyerDays = Math.max(0, totalDays - sellerDays);
+        // For "empty" tenant: no lease period, no cutoff - everything is 0/buyer-side
+        const totalDays = (isEmptyTenant || !ls || !le) ? 0 : daysInclusive(ls, le);
+        const sellerDays = isEmptyTenant ? 0 : Math.max(0, daysInclusive(ls, ho));
+        const buyerDays = isEmptyTenant ? 0 : Math.max(0, totalDays - sellerDays);
         
         // Recalculate PDC total based on the dynamic PDC area
         let pdcTotal = 0;
@@ -6825,6 +6971,22 @@ Examples:
         const isSellerPays = net >= 0;
         directionText.textContent = isSellerPays ? 'SELLER PAYS BUYER' : 'BUYER PAYS SELLER';
         directionText.style.color = summaryTotal.style.color = isSellerPays ? '#065f46' : '#b91c1c';
+        
+        // Show new owner info (buyer name and unit number)
+        const newOwnerInfoEl = qs('#newOwnerInfo');
+        if(newOwnerInfoEl) {
+          const buyerFullName = buyerNameInput?.value?.trim() || '';
+          const unitNumber = unitNo?.value?.trim() || '';
+          if(buyerFullName || unitNumber) {
+            let ownerText = 'Final settlement amount for new owner';
+            if(buyerFullName) ownerText += ` <strong>${sanitizeString(buyerFullName)}</strong>`;
+            if(unitNumber) ownerText += ` • Unit <strong>${sanitizeString(unitNumber)}</strong>`;
+            newOwnerInfoEl.innerHTML = ownerText;
+          } else {
+            newOwnerInfoEl.innerHTML = '';
+          }
+        }
+        
         const directionLabel = isSellerPays ? 'Seller → Buyer' : 'Buyer → Seller';
         const directionClass = isSellerPays ? 'positive' : 'danger';
         notesEl.innerHTML = `
@@ -6868,6 +7030,9 @@ Examples:
         markDocsReady(false);
         generateMessages();
         updateTitle();
+        
+        // Mark calculation as fresh - results now match inputs
+        markCalculationFresh();
         
       } catch (e) { console.error(e); alert('Calculation error'); }
     }
@@ -6969,6 +7134,18 @@ Examples:
       
       addHeader(doc);
       y = 32;
+      
+      // Empty Unit Notice Banner
+      const pdfTenantVal = (tenantName.value || '').trim().toLowerCase();
+      if (pdfTenantVal === 'empty') {
+        doc.setFillColor(255, 191, 0); // Amber background
+        doc.roundedRect(left, y - 2, 261, 10, 2, 2, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        doc.text('EMPTY UNIT - No Tenant', 148.5, y + 4, { align: 'center' });
+        y += 14;
+      }
       
       y = drawSectionTitle(doc, 'Lease & Case Details', y, left);
       doc.setFont('helvetica','normal'); doc.setFontSize(10);
@@ -8409,6 +8586,13 @@ Examples:
       validateFields();
       markDocsReady(false);
       updateHealthRibbon();
+      // Clear empty unit mode banner on reset
+      if(typeof window.checkEmptyUnitMode === 'function') window.checkEmptyUnitMode();
+      // Clear stale data tracking on reset
+      lastCalculationHash = null;
+      calculationIsFresh = false;
+      if(staleDataWarning) staleDataWarning.classList.remove('visible');
+      document.body.classList.remove('results-stale');
     }
 
     function parsePropertyData(text){
@@ -9643,6 +9827,18 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         location.reload();
       });
       qs('#printBtn').addEventListener('click', () => {
+        // Check if data is stale - warn user before printing
+        if(!calculationIsFresh && lastCalculationHash !== null) {
+          const proceed = confirm('⚠️ WARNING: Data has changed since last calculation!\n\nThe results may not match current input values.\n\nClick OK to recalculate first, or Cancel to print anyway (not recommended).');
+          if(proceed) {
+            document.getElementById('calcBtn').click();
+            setTimeout(() => {
+              preparePrintReview();
+              window.print();
+            }, 300);
+            return;
+          }
+        }
         // Populate print review summary before printing
         preparePrintReview();
         window.print();
@@ -9697,11 +9893,25 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         if (printRent) printRent.textContent = formatCurrency(qs('#rent')?.value);
         if (printDeposit) printDeposit.textContent = formatCurrency(qs('#securityDeposit')?.value);
       }
-      qs('#excelBtn').addEventListener('click', exportToExcel);
-      qs('#previewBtn').addEventListener('click', previewPDF);
-      qs('#pdfBtn').addEventListener('click', exportToPDF);
-      qs('#buyerPdfBtn').addEventListener('click', exportToBuyerPDF);
-      qs('#pngBtn').addEventListener('click', exportToPNG);
+      
+      // Wrapper function to check stale data before export
+      function checkStaleBeforeExport(exportFn) {
+        if(!calculationIsFresh && lastCalculationHash !== null) {
+          const proceed = confirm('⚠️ WARNING: Data has changed since last calculation!\n\nThe exported document may not match current input values.\n\nClick OK to recalculate first, or Cancel to export anyway (not recommended).');
+          if(proceed) {
+            document.getElementById('calcBtn').click();
+            setTimeout(exportFn, 300);
+            return;
+          }
+        }
+        exportFn();
+      }
+      
+      qs('#excelBtn').addEventListener('click', () => checkStaleBeforeExport(exportToExcel));
+      qs('#previewBtn').addEventListener('click', () => checkStaleBeforeExport(previewPDF));
+      qs('#pdfBtn').addEventListener('click', () => checkStaleBeforeExport(exportToPDF));
+      qs('#buyerPdfBtn').addEventListener('click', () => checkStaleBeforeExport(exportToBuyerPDF));
+      qs('#pngBtn').addEventListener('click', () => checkStaleBeforeExport(exportToPNG));
       
       // Dark Mode Toggle
       const darkModeToggle = qs('#darkModeToggle');
@@ -10027,6 +10237,25 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       buildingName.addEventListener('input', updateTitle);
       unitNo.addEventListener('input', updateTitle);
       tenantName.addEventListener('input', updateTitle);
+      
+      // Empty Unit Mode detection and visual indicator - global function
+      window.checkEmptyUnitMode = function() {
+        const tenantVal = tenantName?.value?.trim().toLowerCase() || '';
+        const isEmptyTenant = tenantVal === 'empty';
+        const banner = qs('#emptyUnitBanner');
+        if(isEmptyTenant) {
+          document.body.classList.add('empty-unit-mode');
+          if(banner) banner.classList.add('visible');
+        } else {
+          document.body.classList.remove('empty-unit-mode');
+          if(banner) banner.classList.remove('visible');
+        }
+      };
+      tenantName.addEventListener('input', window.checkEmptyUnitMode);
+      tenantName.addEventListener('change', window.checkEmptyUnitMode);
+      // Check on page load in case restoring a saved state
+      setTimeout(window.checkEmptyUnitMode, 100);
+      setTimeout(window.checkEmptyUnitMode, 500); // Extra check after auto-restore completes
       
       // Initialize Service Charge Calculator
       setupServiceChargeCalculator();
