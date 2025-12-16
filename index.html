@@ -397,6 +397,12 @@
     .timeline-wrapper{margin:10px 0}
     .inline-field{display:flex;gap:4px;align-items:center}
     .field-wrapper{position:relative}
+    /* Highlight handover date - blue, no border */
+    #handoverDate{background:rgba(59,130,246,0.1) !important}
+    [data-theme="dark"] #handoverDate{background:rgba(96,165,250,0.12) !important}
+    /* Highlight service charge - soft green, no border */
+    #serviceCharge{background:rgba(16,185,129,0.04) !important}
+    [data-theme="dark"] #serviceCharge{background:rgba(52,211,153,0.06) !important}
     .field-hint{font-size:0.72rem;margin-top:3px;display:flex;align-items:center;gap:5px;color:#ea580c;opacity:0;transform:translateY(-2px);transition:opacity 0.2s ease,transform 0.2s ease;pointer-events:none}
 
     /* Input-with-lock: small inline checkbox inside numeric inputs (left) */
