@@ -6862,9 +6862,9 @@ Examples:
 
     function calculate(silentMode = false){
       try {
-        // Check if tenant is "empty" (case insensitive) - skip most validations, no rental cutoff
+        // Check if tenant is "empty" or "empty unit" (case insensitive) - skip most validations, no rental cutoff
         const tenantVal = tenantName.value.trim().toLowerCase();
-        const isEmptyTenant = tenantVal === 'empty';
+        const isEmptyTenant = tenantVal === 'empty' || tenantVal === 'empty unit';
         
         // Validation: Check if all required fields are filled
         const missingFields = [];
@@ -7137,7 +7137,7 @@ Examples:
       
       // Empty Unit Notice Banner
       const pdfTenantVal = (tenantName.value || '').trim().toLowerCase();
-      if (pdfTenantVal === 'empty') {
+      if (pdfTenantVal === 'empty' || pdfTenantVal === 'empty unit') {
         doc.setFillColor(255, 191, 0); // Amber background
         doc.roundedRect(left, y - 2, 261, 10, 2, 2, 'F');
         doc.setFont('helvetica', 'bold');
@@ -10241,7 +10241,7 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       // Empty Unit Mode detection and visual indicator - global function
       window.checkEmptyUnitMode = function() {
         const tenantVal = tenantName?.value?.trim().toLowerCase() || '';
-        const isEmptyTenant = tenantVal === 'empty';
+        const isEmptyTenant = tenantVal === 'empty' || tenantVal === 'empty unit';
         const banner = qs('#emptyUnitBanner');
         if(isEmptyTenant) {
           document.body.classList.add('empty-unit-mode');
