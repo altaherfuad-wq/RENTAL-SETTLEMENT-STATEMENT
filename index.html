@@ -558,6 +558,16 @@
     .case-row-btn.edit:hover{background:#d4a574}
     .case-row-btn.delete{background:#e6bfc0;color:white}
     .case-row-btn.delete:hover{background:#d6a9aa}
+    .case-row-btn.archive{background:#e0e7ff;color:#4338ca}
+    .case-row-btn.archive:hover{background:#c7d2fe}
+    .case-row-btn.unarchive{background:#fef3c7;color:#b45309}
+    .case-row-btn.unarchive:hover{background:#fde68a}
+    .case-row.archived{opacity:0.6;background:#f9fafb}
+    .case-row.archived .case-row-title{color:#6b7280}
+    .archive-toggle{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#6b7280;cursor:pointer;padding:4px 8px;border-radius:6px;transition:background 0.2s}
+    .archive-toggle:hover{background:#f3f4f6}
+    .archive-toggle input{cursor:pointer}
+    .archive-badge{font-size:0.7rem;background:#e5e7eb;color:#6b7280;padding:2px 6px;border-radius:4px;margin-left:6px}
     /* Case Selection Mode & Aggregate Statement */
     .selection-mode-bar{display:none;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;padding:12px 16px;border-radius:10px;margin-bottom:12px;animation:slideIn 0.3s ease}
     .selection-mode-bar.visible{display:flex}
@@ -576,31 +586,45 @@
     .select-mode-btn.active{background:#3b82f6;color:white;border-color:#3b82f6}
     @keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
     /* Aggregate Statement Modal */
-    .aggregate-modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:10002;animation:fadeIn 0.2s ease}
-    .aggregate-modal{background:white;border-radius:16px;max-width:900px;width:95%;max-height:90vh;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.25);animation:scaleIn 0.25s ease}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    @keyframes scaleIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-    .aggregate-header{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:white;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
-    .aggregate-title{font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:10px}
-    .aggregate-close{background:rgba(255,255,255,0.15);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
-    .aggregate-close:hover{background:rgba(255,255,255,0.25)}
-    .aggregate-body{padding:0;max-height:calc(90vh - 140px);overflow-y:auto}
-    .aggregate-summary{background:#f0fdf4;padding:16px 24px;border-bottom:1px solid #dcfce7;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .aggregate-modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10002}
+    .aggregate-modal{background:white;border-radius:12px;max-width:950px;width:95%;max-height:90vh;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+    .aggregate-header{background:#374151;color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+    .aggregate-title{font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:10px}
+    .aggregate-close{background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+    .aggregate-close:hover{background:rgba(255,255,255,0.2)}
+    .aggregate-body{padding:0;max-height:calc(90vh - 130px);overflow-y:auto}
+    .aggregate-summary{background:#f9fafb;padding:16px 24px;border-bottom:1px solid #e5e7eb;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
     .aggregate-stat{text-align:center}
-    .aggregate-stat-value{font-size:1.5rem;font-weight:700;color:#059669}
+    .aggregate-stat-value{font-size:1.25rem;font-weight:600;color:#111827}
     .aggregate-stat-value.negative{color:#dc2626}
-    .aggregate-stat-label{font-size:0.8rem;color:#6b7280;margin-top:2px}
+    .aggregate-stat-label{font-size:0.7rem;color:#6b7280;margin-top:2px;text-transform:uppercase}
     .aggregate-table-wrap{padding:16px 24px}
-    .aggregate-table{width:100%;border-collapse:collapse;font-size:0.9rem}
-    .aggregate-table th{background:#f8fafc;padding:12px;text-align:left;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;position:sticky;top:0}
-    .aggregate-table td{padding:12px;border-bottom:1px solid #f1f5f9;color:#334155}
-    .aggregate-table tr:hover td{background:#f8fafc}
-    .aggregate-table .amount{font-weight:600;font-family:'Courier New',monospace}
+    .aggregate-table{width:100%;border-collapse:collapse;font-size:0.85rem}
+    .aggregate-table th{background:#f9fafb;padding:10px 8px;text-align:left;font-weight:600;color:#374151;border-bottom:1px solid #e5e7eb;font-size:0.75rem;text-transform:uppercase}
+    .aggregate-table td{padding:10px 8px;border-bottom:1px solid #f3f4f6;color:#374151}
+    .aggregate-table tr:hover td{background:#f9fafb}
+    .aggregate-table .amount{font-weight:500;font-family:monospace;font-size:0.8rem;text-align:right}
     .aggregate-table .positive{color:#059669}
     .aggregate-table .negative{color:#dc2626}
-    .aggregate-table .net-cell{font-weight:700;font-size:1rem}
-    .aggregate-footer{padding:16px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:12px}
-    .aggregate-footer .btn{padding:10px 20px}
+    .aggregate-table .neutral{color:#374151}
+    .aggregate-table .net-cell{font-weight:600}
+    .aggregate-table th small{font-weight:400;color:#9ca3af;display:block;text-transform:none;font-size:0.65rem;margin-top:1px}
+    .aggregate-table td small{color:#6b7280;font-size:0.7rem}
+    .aggregate-table .owner-cell{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .aggregate-footer{padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:10px}
+    .aggregate-footer .btn{padding:10px 18px;font-weight:500;border-radius:8px;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;border:none;cursor:pointer}
+    .aggregate-footer .btn.gray{background:#6b7280;color:white}
+    .aggregate-footer .btn.gray:hover{background:#4b5563}
+    .aggregate-footer .btn.primary{background:#3b82f6;color:white}
+    .aggregate-footer .btn.primary:hover{background:#2563eb}
+    .aggregate-footer .btn.positive{background:#10b981;color:white}
+    .aggregate-footer .btn.positive:hover{background:#059669}
+    .aggregate-footer .btn.print{background:#6b7280;color:white}
+    .aggregate-footer .btn.print:hover{background:#4b5563}
+    .aggregate-table tfoot tr{background:#f3f4f6}
+    .aggregate-table tfoot td{font-weight:600;font-size:0.85rem;padding:12px 8px;border:none;color:#111827}
+    .aggregate-table tfoot .positive{color:#059669}
+    .aggregate-table tfoot .negative{color:#dc2626}
     [data-theme="dark"] .aggregate-modal{background:#1e293b;color:#f1f5f9}
     [data-theme="dark"] .aggregate-summary{background:#064e3b;border-color:#065f46}
     [data-theme="dark"] .aggregate-stat-value{color:#34d399}
@@ -3092,7 +3116,8 @@ Examples:
           </div>
         </details>
         <!-- Selection Mode Toggle -->
-        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <label class="archive-toggle"><input type="checkbox" id="showArchivedToggle"> Show Archived<span class="archive-badge" id="archivedCount">0</span></label>
           <button class="select-mode-btn" id="selectModeBtn" title="Select multiple cases to generate aggregate statement">☑️ Select Mode</button>
         </div>
         <!-- Selection Bar (shown when in select mode) -->
@@ -3116,7 +3141,7 @@ Examples:
 
   <!-- Aggregate Statement Modal -->
   <div id="aggregateModal" class="aggregate-modal-backdrop" style="display:none">
-    <div class="aggregate-modal">
+    <div class="aggregate-modal" style="max-width:1100px">
       <div class="aggregate-header">
         <div class="aggregate-title">📊 Aggregate Settlement Statement</div>
         <button class="aggregate-close" id="closeAggregateModal">×</button>
@@ -3127,13 +3152,13 @@ Examples:
           <table class="aggregate-table">
             <thead>
               <tr>
-                <th>Unit / Case</th>
-                <th>Tenant</th>
-                <th>Total Rent</th>
-                <th>Buyer Rent</th>
-                <th>Cheques (PDC)</th>
-                <th>Security Deposit</th>
-                <th>Service Charge</th>
+                <th>Tower</th>
+                <th>Unit</th>
+                <th>New Owner</th>
+                <th>Buyer Rent<br><small>(Pro-rata)</small></th>
+                <th>Less: PDC<br><small>Handed Over</small></th>
+                <th>Add: Deposit<br><small>Security</small></th>
+                <th>Less: SC<br><small>Service Charge</small></th>
                 <th>Net Settlement</th>
               </tr>
             </thead>
@@ -3143,8 +3168,9 @@ Examples:
         </div>
       </div>
       <div class="aggregate-footer">
-        <button class="btn gray" id="closeAggregateBtn">Close</button>
+        <button class="btn gray" id="closeAggregateBtn">✕ Close</button>
         <button class="btn primary" id="copyAggregateBtn">📋 Copy to Clipboard</button>
+        <button class="btn print" id="printAggregateBtn">🖨️ Print</button>
         <button class="btn positive" id="exportAggregatePdfBtn">📄 Export PDF</button>
       </div>
     </div>
@@ -10786,7 +10812,12 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       const casesList = qs('#casesList');
       if(!casesList) return;
       const totalCases = Object.keys(cases).length;
-      qs('#caseCount').textContent = totalCases;
+      const showArchived = qs('#showArchivedToggle')?.checked || false;
+      const archivedCount = Object.values(cases).filter(c => c.archived).length;
+      const activeCount = totalCases - archivedCount;
+      qs('#caseCount').textContent = showArchived ? totalCases : activeCount;
+      const archivedCountEl = qs('#archivedCount');
+      if(archivedCountEl) archivedCountEl.textContent = archivedCount;
 
       const search = (searchCasesInput?.value || '').toLowerCase();
       const buildingFilterValue = (buildingFilterSelect?.value || '').toLowerCase();
@@ -10826,6 +10857,9 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       }
 
       const filtered = Object.values(cases).filter(c => {
+        // Archive filter
+        if(!showArchived && c.archived) return false;
+        
         const building = String(c.data.buildingName || '').toLowerCase();
         const unit = String(c.data.unitNo || '').toLowerCase();
         const tenant = String(c.data.tenantName || '').toLowerCase();
@@ -10921,19 +10955,24 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
             const isSelected = selectedCaseIds.has(c.id);
             const selectableClass = isSelectionMode ? ' selectable' : '';
             const selectedClass = isSelected ? ' selected' : '';
+            const archivedClass = c.archived ? ' archived' : '';
             const checkboxHtml = isSelectionMode ? `<input type="checkbox" class="case-checkbox" data-case-id="${c.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleCaseSelection('${c.id}')">` : '';
             const rowClick = isSelectionMode ? `onclick="toggleCaseSelection('${c.id}')"` : '';
+            const archiveBtn = c.archived 
+              ? `<button onclick="event.stopPropagation(); unarchiveCaseById('${c.id}')" class="btn case-row-btn unarchive" title="Unarchive">📤</button>`
+              : `<button onclick="event.stopPropagation(); archiveCaseById('${c.id}')" class="btn case-row-btn archive" title="Archive">📥</button>`;
             return `
-              <div class="case-row${selectableClass}${selectedClass}" ${rowClick}>
+              <div class="case-row${selectableClass}${selectedClass}${archivedClass}" ${rowClick}>
                 ${checkboxHtml}
                 <div class="case-row-main">
-                  <div class="case-row-title">${caseName}</div>
+                  <div class="case-row-title">${caseName}${c.archived ? ' <span style="font-size:0.7rem;color:#9ca3af">(archived)</span>' : ''}</div>
                   <div class="case-row-meta">${building ? building + ' • ' : ''}Unit: ${unit} • ${date}</div>
                 </div>
-                <div class="case-row-actions" onclick="event.stopPropagation()">
-                  <button onclick="loadCaseById('${c.id}')" class="btn case-row-btn load" title="Load">📂</button>
-                  <button onclick="editCaseById('${c.id}')" class="btn case-row-btn edit" title="Edit">✏️</button>
-                  <button onclick="deleteCaseById('${c.id}')" class="btn case-row-btn delete" title="Delete">🗑️</button>
+                <div class="case-row-actions">
+                  <button onclick="event.stopPropagation(); loadCaseById('${c.id}')" class="btn case-row-btn load" title="Load">📂</button>
+                  <button onclick="event.stopPropagation(); editCaseById('${c.id}')" class="btn case-row-btn edit" title="Edit">✏️</button>
+                  ${archiveBtn}
+                  <button onclick="event.stopPropagation(); deleteCaseById('${c.id}')" class="btn case-row-btn delete" title="Delete">🗑️</button>
                 </div>
               </div>
             `;
@@ -10973,17 +11012,22 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
           const selectedClass = isSelected ? ' selected' : '';
           const checkboxHtml = isSelectionMode ? `<input type="checkbox" class="case-checkbox" data-case-id="${c.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleCaseSelection('${c.id}')">` : '';
           const rowClick = isSelectionMode ? `onclick="toggleCaseSelection('${c.id}')"` : '';
+          const archivedClass = c.archived ? ' archived' : '';
+          const archiveBtn = c.archived 
+            ? `<button onclick="event.stopPropagation(); unarchiveCaseById('${c.id}')" class="btn case-row-btn unarchive" title="Unarchive">📤</button>`
+            : `<button onclick="event.stopPropagation(); archiveCaseById('${c.id}')" class="btn case-row-btn archive" title="Archive">📥</button>`;
           return `
-            <div class="case-row${selectableClass}${selectedClass}" ${rowClick}>
+            <div class="case-row${selectableClass}${selectedClass}${archivedClass}" ${rowClick}>
               ${checkboxHtml}
               <div class="case-row-main">
-                <div class="case-row-title">${caseName}</div>
+                <div class="case-row-title">${caseName}${c.archived ? ' <span style="font-size:0.7rem;color:#9ca3af">(archived)</span>' : ''}</div>
                 <div class="case-row-meta">${building ? building + ' • ' : ''}Unit: ${unit} • Tenant: ${tenant} • ${date}</div>
               </div>
-              <div class="case-row-actions" onclick="event.stopPropagation()">
-                <button onclick="loadCaseById('${c.id}')" class="btn case-row-btn load" title="Load">📂</button>
-                <button onclick="editCaseById('${c.id}')" class="btn case-row-btn edit" title="Edit">✏️</button>
-                <button onclick="deleteCaseById('${c.id}')" class="btn case-row-btn delete" title="Delete">🗑️</button>
+              <div class="case-row-actions">
+                <button onclick="event.stopPropagation(); loadCaseById('${c.id}')" class="btn case-row-btn load" title="Load">📂</button>
+                <button onclick="event.stopPropagation(); editCaseById('${c.id}')" class="btn case-row-btn edit" title="Edit">✏️</button>
+                ${archiveBtn}
+                <button onclick="event.stopPropagation(); deleteCaseById('${c.id}')" class="btn case-row-btn delete" title="Delete">🗑️</button>
               </div>
             </div>
           `;
@@ -11077,6 +11121,7 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         building: data.buildingName || '',
         unit: data.unitNo || '',
         tenant: data.tenantName || '',
+        buyerName: data.buyerName || '',
         rent: rent,
         buyerRent: buyerRent,
         sellerRent: sellerRent,
@@ -11098,10 +11143,20 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         rent: 0, buyerRent: 0, pdcTotal: 0, securityDeposit: 0, serviceCharge: 0, sellerPays: 0, buyerPays: 0
       };
       
+      // Helper to get first and last name only
+      function getFirstLastName(fullName) {
+        if(!fullName) return '-';
+        const parts = fullName.trim().split(/\s+/);
+        if(parts.length === 1) return parts[0];
+        if(parts.length === 2) return parts.join(' ');
+        return `${parts[0]} ${parts[parts.length - 1]}`;
+      }
+      
       selectedCaseIds.forEach(id => {
         const caseData = cases[id];
         if(caseData) {
           const settlement = calculateCaseSettlement(caseData);
+          settlement.buyerName = getFirstLastName(settlement.buyerName);
           settlements.push(settlement);
           totals.rent += settlement.rent;
           totals.buyerRent += settlement.buyerRent;
@@ -11124,19 +11179,19 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         summaryEl.innerHTML = `
           <div class="aggregate-stat">
             <div class="aggregate-stat-value">${settlements.length}</div>
-            <div class="aggregate-stat-label">Cases Selected</div>
+            <div class="aggregate-stat-label">Cases</div>
           </div>
           <div class="aggregate-stat">
-            <div class="aggregate-stat-value">AED ${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-            <div class="aggregate-stat-label">Total Contract Rent</div>
+            <div class="aggregate-stat-value">${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}</div>
+            <div class="aggregate-stat-label">Total Rent</div>
           </div>
           <div class="aggregate-stat">
-            <div class="aggregate-stat-value">AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-            <div class="aggregate-stat-label">Total Cheques (PDC)</div>
+            <div class="aggregate-stat-value">${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}</div>
+            <div class="aggregate-stat-label">Total PDC</div>
           </div>
           <div class="aggregate-stat">
             <div class="aggregate-stat-value ${netTotal >= 0 ? '' : 'negative'}">AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-            <div class="aggregate-stat-label">${netTotal >= 0 ? 'Net: Seller → Buyer' : 'Net: Buyer → Seller'}</div>
+            <div class="aggregate-stat-label">${netTotal >= 0 ? 'Seller → Buyer' : 'Buyer → Seller'}</div>
           </div>
         `;
       }
@@ -11145,19 +11200,18 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       const tableBody = qs('#aggregateTableBody');
       if(tableBody) {
         tableBody.innerHTML = settlements.map(s => {
-          const unitDisplay = s.building ? `${s.building} - ${s.unit}` : s.unit;
           const netClass = s.net >= 0 ? 'positive' : 'negative';
           const netLabel = s.net >= 0 ? 'S→B' : 'B→S';
           return `
             <tr>
-              <td><strong>${sanitizeString(unitDisplay)}</strong><br><small style="color:#6b7280">${sanitizeString(s.caseName)}</small></td>
-              <td>${sanitizeString(s.tenant)}</td>
-              <td class="amount">AED ${s.rent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-              <td class="amount">AED ${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-              <td class="amount">AED ${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-              <td class="amount">AED ${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-              <td class="amount">AED ${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-              <td class="amount net-cell ${netClass}">AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} <small>(${netLabel})</small></td>
+              <td>${sanitizeString(s.building) || '-'}</td>
+              <td><strong>${sanitizeString(s.unit)}</strong></td>
+              <td class="owner-cell" title="${sanitizeString(s.buyerName)}">${sanitizeString(s.buyerName) || '-'}</td>
+              <td class="amount neutral">${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="amount negative">-${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="amount positive">+${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="amount negative">-${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="amount net-cell ${netClass}">AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})} <small>${netLabel}</small></td>
             </tr>
           `;
         }).join('');
@@ -11167,15 +11221,15 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       const tableFoot = qs('#aggregateTableFoot');
       if(tableFoot) {
         const netTotalClass = netTotal >= 0 ? 'positive' : 'negative';
+        const netTotalLabel = netTotal >= 0 ? 'S→B' : 'B→S';
         tableFoot.innerHTML = `
-          <tr style="background:#f1f5f9;font-weight:700">
-            <td colspan="2">TOTALS (${settlements.length} cases)</td>
-            <td class="amount">AED ${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="amount">AED ${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="amount">AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="amount">AED ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="amount">AED ${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="amount net-cell ${netTotalClass}">AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+          <tr>
+            <td colspan="3"><strong>TOTAL</strong> · ${settlements.length} cases</td>
+            <td class="amount">${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td class="amount negative">-${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td class="amount positive">+${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td class="amount negative">-${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td class="amount net-cell ${netTotalClass}">AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} <small>${netTotalLabel}</small></td>
           </tr>
         `;
       }
@@ -11197,32 +11251,30 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       if(!window.aggregateData) return;
       const { settlements, totals, netTotal } = window.aggregateData;
       
-      let text = '📊 AGGREGATE SETTLEMENT STATEMENT\n';
-      text += '═'.repeat(50) + '\n\n';
+      // Create tab-separated format for Excel
+      let text = 'Tower\tUnit\tNew Owner\tBuyer Rent (Pro-rata)\tLess: PDC Handed Over\tAdd: Security Deposit\tLess: Service Charge\tNet Settlement\n';
       
-      settlements.forEach((s, i) => {
-        const unitDisplay = s.building ? `${s.building} - ${s.unit}` : s.unit;
+      settlements.forEach(s => {
         const direction = s.net >= 0 ? 'Seller → Buyer' : 'Buyer → Seller';
-        text += `${i + 1}. ${unitDisplay}\n`;
-        text += `   Tenant: ${s.tenant}\n`;
-        text += `   Total Rent: AED ${s.rent.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-        text += `   Buyer Rent: AED ${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-        text += `   Cheques: AED ${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-        text += `   Security Deposit: AED ${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-        text += `   Service Charge: AED ${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-        text += `   Net Settlement: AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})} (${direction})\n\n`;
+        text += `${s.building || '-'}\t${s.unit}\t${s.buyerName || '-'}\t`;
+        text += `AED ${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+        text += `- AED ${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+        text += `+ AED ${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+        text += `- AED ${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+        text += `AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})} (${direction})\n`;
       });
       
-      text += '═'.repeat(50) + '\n';
-      text += `SUMMARY (${settlements.length} cases)\n`;
-      text += `Total Rent: AED ${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-      text += `Total Cheques: AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-      text += `Total Security Deposits: AED ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-      text += `Total Service Charges: AED ${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}\n`;
-      text += `NET TOTAL: AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netTotal >= 0 ? 'Seller → Buyer' : 'Buyer → Seller'})\n`;
+      // Totals row
+      const netTotalLabel = netTotal >= 0 ? 'Seller → Buyer' : 'Buyer → Seller';
+      text += `\nTOTALS\t${settlements.length} cases\t\t`;
+      text += `AED ${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+      text += `- AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+      text += `+ AED ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+      text += `- AED ${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}\t`;
+      text += `AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netTotalLabel})\n`;
       
       navigator.clipboard.writeText(text).then(() => {
-        showToast('Statement copied to clipboard!');
+        showToast('Copied! Paste into Excel for formatted table');
       }).catch(err => {
         console.error('Copy failed:', err);
         alert('Copy failed. Please try again.');
@@ -11253,79 +11305,89 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         
         // Summary boxes
         doc.setFillColor(240, 253, 244);
-        doc.rect(14, y, pageWidth - 28, 18, 'F');
+        doc.rect(14, y, pageWidth - 28, 14, 'F');
         doc.setTextColor(5, 150, 105);
-        doc.setFontSize(10);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'bold');
-        doc.text(`${settlements.length} Cases`, 24, y + 8);
-        doc.text(`Total Rent: AED ${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, 70, y + 8);
-        doc.text(`Total Cheques: AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, 150, y + 8);
-        doc.text(`Net: AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netTotal >= 0 ? 'Seller→Buyer' : 'Buyer→Seller'})`, 230, y + 8);
+        doc.text(`${settlements.length} Cases`, 20, y + 9);
+        doc.text(`Buyer Rent: AED ${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, 55, y + 9);
+        doc.text(`PDC: - AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, 120, y + 9);
+        doc.text(`Deposit: + AED ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}`, 175, y + 9);
+        doc.setTextColor(netTotal >= 0 ? 5 : 220, netTotal >= 0 ? 150 : 38, netTotal >= 0 ? 105 : 38);
+        doc.text(`Net: AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netTotal >= 0 ? 'Seller→Buyer' : 'Buyer→Seller'})`, 235, y + 9);
         
-        y += 26;
+        y += 22;
         
         // Table headers
         doc.setFillColor(248, 250, 252);
-        doc.rect(14, y, pageWidth - 28, 8, 'F');
+        doc.rect(14, y, pageWidth - 28, 10, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.setTextColor(71, 85, 105);
         
-        const cols = [14, 60, 95, 125, 155, 185, 215, 245];
-        doc.text('Unit / Case', cols[0] + 2, y + 5.5);
-        doc.text('Tenant', cols[1] + 2, y + 5.5);
-        doc.text('Total Rent', cols[2] + 2, y + 5.5);
-        doc.text('Buyer Rent', cols[3] + 2, y + 5.5);
-        doc.text('Cheques', cols[4] + 2, y + 5.5);
-        doc.text('Deposit', cols[5] + 2, y + 5.5);
-        doc.text('SC', cols[6] + 2, y + 5.5);
-        doc.text('Net', cols[7] + 2, y + 5.5);
+        const cols = [14, 50, 80, 115, 150, 185, 220, 250];
+        doc.text('Tower', cols[0] + 2, y + 6);
+        doc.text('Unit', cols[1] + 2, y + 6);
+        doc.text('New Owner', cols[2] + 2, y + 6);
+        doc.text('Buyer Rent', cols[3] + 2, y + 6);
+        doc.text('Less: PDC', cols[4] + 2, y + 6);
+        doc.text('Add: Deposit', cols[5] + 2, y + 6);
+        doc.text('Less: SC', cols[6] + 2, y + 6);
+        doc.text('Net Settlement', cols[7] + 2, y + 6);
         
-        y += 10;
+        y += 12;
         
         // Table rows
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(7.5);
+        doc.setFontSize(8);
         
         settlements.forEach(s => {
-          if(y > pageHeight - 20) {
+          if(y > pageHeight - 25) {
             doc.addPage();
             y = 20;
           }
           
           doc.setTextColor(51, 65, 85);
-          const unitDisplay = s.building ? `${s.building} - ${s.unit}` : s.unit;
-          doc.text(unitDisplay.substring(0, 25), cols[0] + 2, y);
-          doc.text((s.tenant || '').substring(0, 18), cols[1] + 2, y);
-          doc.text(`AED ${s.rent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[2] + 2, y);
-          doc.text(`AED ${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[3] + 2, y);
-          doc.text(`AED ${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[4] + 2, y);
-          doc.text(`AED ${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[5] + 2, y);
-          doc.text(`AED ${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[6] + 2, y);
+          doc.text((s.building || '-').substring(0, 18), cols[0] + 2, y);
+          doc.setFont('helvetica', 'bold');
+          doc.text((s.unit || '-').substring(0, 12), cols[1] + 2, y);
+          doc.setFont('helvetica', 'normal');
+          doc.text((s.buyerName || '-').substring(0, 18), cols[2] + 2, y);
+          doc.text(`${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[3] + 2, y);
+          doc.setTextColor(220, 38, 38);
+          doc.text(`- ${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[4] + 2, y);
+          doc.setTextColor(5, 150, 105);
+          doc.text(`+ ${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[5] + 2, y);
+          doc.setTextColor(220, 38, 38);
+          doc.text(`- ${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[6] + 2, y);
           
           doc.setTextColor(s.net >= 0 ? 5 : 220, s.net >= 0 ? 150 : 38, s.net >= 0 ? 105 : 38);
           doc.setFont('helvetica', 'bold');
-          doc.text(`AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[7] + 2, y);
+          const netLabel = s.net >= 0 ? 'S→B' : 'B→S';
+          doc.text(`${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netLabel})`, cols[7] + 2, y);
           doc.setFont('helvetica', 'normal');
           
-          y += 7;
+          y += 8;
         });
         
         // Totals row
-        y += 2;
+        y += 3;
         doc.setFillColor(241, 245, 249);
-        doc.rect(14, y - 4, pageWidth - 28, 10, 'F');
+        doc.rect(14, y - 5, pageWidth - 28, 12, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.setTextColor(30, 41, 59);
-        doc.text(`TOTALS (${settlements.length})`, cols[0] + 2, y + 2);
-        doc.text(`AED ${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[2] + 2, y + 2);
-        doc.text(`AED ${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[3] + 2, y + 2);
-        doc.text(`AED ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[4] + 2, y + 2);
-        doc.text(`AED ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[5] + 2, y + 2);
-        doc.text(`AED ${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[6] + 2, y + 2);
+        doc.text(`TOTALS (${settlements.length} cases)`, cols[0] + 2, y + 2);
+        doc.text(`${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[3] + 2, y + 2);
+        doc.setTextColor(220, 38, 38);
+        doc.text(`- ${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[4] + 2, y + 2);
+        doc.setTextColor(5, 150, 105);
+        doc.text(`+ ${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[5] + 2, y + 2);
+        doc.setTextColor(220, 38, 38);
+        doc.text(`- ${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[6] + 2, y + 2);
         doc.setTextColor(netTotal >= 0 ? 5 : 220, netTotal >= 0 ? 150 : 38, netTotal >= 0 ? 105 : 38);
-        doc.text(`AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})}`, cols[7] + 2, y + 2);
+        const netTotalLabel = netTotal >= 0 ? 'S→B' : 'B→S';
+        doc.text(`${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})} (${netTotalLabel})`, cols[7] + 2, y + 2);
         
         // Download
         const filename = `Aggregate_Settlement_${new Date().toISOString().split('T')[0]}.pdf`;
@@ -11336,6 +11398,101 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         console.error('PDF export failed:', err);
         alert('PDF export failed. Please try again.');
       }
+    }
+
+    function printAggregateStatement() {
+      if(!window.aggregateData) return;
+      
+      // Get the table content
+      const { settlements, totals, netTotal } = window.aggregateData;
+      
+      // Create a simple print window
+      const printWin = window.open('', '_blank', 'width=900,height=700');
+      if(!printWin) {
+        alert('Please allow popups to print');
+        return;
+      }
+      
+      const netLabel = netTotal >= 0 ? 'Seller → Buyer' : 'Buyer → Seller';
+      
+      let tableRows = settlements.map(s => {
+        const dir = s.net >= 0 ? 'S→B' : 'B→S';
+        return `
+          <tr>
+            <td>${s.building || '-'}</td>
+            <td><strong>${s.unit}</strong></td>
+            <td>${s.buyerName || '-'}</td>
+            <td style="text-align:right">${s.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td style="text-align:right;color:#dc2626">-${s.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td style="text-align:right;color:#059669">+${s.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td style="text-align:right;color:#dc2626">-${s.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td style="text-align:right;font-weight:600;color:${s.net >= 0 ? '#059669' : '#dc2626'}">AED ${Math.abs(s.net).toLocaleString('en-US', {minimumFractionDigits: 2})} <small>${dir}</small></td>
+          </tr>
+        `;
+      }).join('');
+      
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Aggregate Settlement Statement</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
+            h2 { margin: 0 0 5px 0; font-size: 16px; }
+            .date { color: #666; font-size: 12px; margin-bottom: 15px; }
+            .summary { display: flex; gap: 30px; margin-bottom: 15px; padding: 10px; background: #f9f9f9; }
+            .summary div { text-align: center; }
+            .summary .val { font-size: 16px; font-weight: 600; }
+            .summary .lbl { font-size: 10px; color: #666; text-transform: uppercase; }
+            table { width: 100%; border-collapse: collapse; font-size: 11px; }
+            th { background: #f3f3f3; padding: 8px 6px; text-align: left; font-weight: 600; border-bottom: 1px solid #ddd; font-size: 10px; text-transform: uppercase; }
+            td { padding: 8px 6px; border-bottom: 1px solid #eee; }
+            tfoot td { background: #f3f3f3; font-weight: 600; border-top: 2px solid #ddd; }
+            small { color: #888; font-size: 9px; }
+            @media print { body { padding: 10px; } }
+          </style>
+        </head>
+        <body>
+          <h2>Aggregate Settlement Statement</h2>
+          <div class="date">Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+          <div class="summary">
+            <div><div class="val">${settlements.length}</div><div class="lbl">Cases</div></div>
+            <div><div class="val">${totals.rent.toLocaleString('en-US', {minimumFractionDigits: 0})}</div><div class="lbl">Total Rent</div></div>
+            <div><div class="val">${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 0})}</div><div class="lbl">Total PDC</div></div>
+            <div><div class="val" style="color:${netTotal >= 0 ? '#059669' : '#dc2626'}">AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})}</div><div class="lbl">${netLabel}</div></div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Tower</th>
+                <th>Unit</th>
+                <th>New Owner</th>
+                <th style="text-align:right">Buyer Rent</th>
+                <th style="text-align:right">Less: PDC</th>
+                <th style="text-align:right">Add: Deposit</th>
+                <th style="text-align:right">Less: SC</th>
+                <th style="text-align:right">Net Settlement</th>
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3"><strong>TOTAL</strong> · ${settlements.length} cases</td>
+                <td style="text-align:right">${totals.buyerRent.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                <td style="text-align:right;color:#dc2626">-${totals.pdcTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                <td style="text-align:right;color:#059669">+${totals.securityDeposit.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                <td style="text-align:right;color:#dc2626">-${totals.serviceCharge.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                <td style="text-align:right;font-weight:600;color:${netTotal >= 0 ? '#059669' : '#dc2626'}">AED ${Math.abs(netTotal).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              </tr>
+            </tfoot>
+          </table>
+          <script>window.onload = function() { window.print(); }<\/script>
+        </body>
+        </html>
+      `;
+      
+      printWin.document.write(html);
+      printWin.document.close();
     }
 
     window.loadCaseById = function(caseId) {
@@ -11349,6 +11506,26 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         deleteCase(caseId);
         renderCasesList();
         showToast('Case deleted');
+      }
+    };
+
+    window.archiveCaseById = function(caseId) {
+      const cases = getAllCases();
+      if(cases[caseId]) {
+        cases[caseId].archived = true;
+        localStorage.setItem(CASES_KEY, JSON.stringify(cases));
+        renderCasesList();
+        showToast('Case archived');
+      }
+    };
+
+    window.unarchiveCaseById = function(caseId) {
+      const cases = getAllCases();
+      if(cases[caseId]) {
+        cases[caseId].archived = false;
+        localStorage.setItem(CASES_KEY, JSON.stringify(cases));
+        renderCasesList();
+        showToast('Case restored');
       }
     };
 
@@ -11525,6 +11702,12 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
     if(closeAggregateBtn) closeAggregateBtn.addEventListener('click', closeAggregateModal);
     if(copyAggregateBtn) copyAggregateBtn.addEventListener('click', copyAggregateToClipboard);
     if(exportAggregatePdfBtn) exportAggregatePdfBtn.addEventListener('click', exportAggregateToPdf);
+    const printAggregateBtn = qs('#printAggregateBtn');
+    if(printAggregateBtn) printAggregateBtn.addEventListener('click', printAggregateStatement);
+    
+    // Archive toggle listener
+    const showArchivedToggle = qs('#showArchivedToggle');
+    if(showArchivedToggle) showArchivedToggle.addEventListener('change', renderCasesList);
     
     // Close aggregate modal when clicking backdrop
     const aggregateModal = qs('#aggregateModal');
