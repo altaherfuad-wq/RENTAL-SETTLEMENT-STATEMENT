@@ -11085,12 +11085,15 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       const secDeposit = parseFloat(String(data.securityDeposit || '0').replace(/,/g, '')) || 0;
       const serviceChg = parseFloat(String(data.serviceCharge || '0').replace(/,/g, '')) || 0;
       
-      // Calculate cheques total
+      // Calculate PDC total - ONLY non-cleared cheques (these are handed over to buyer)
       let pdcTotal = 0;
       if(data.cheques && Array.isArray(data.cheques)) {
         data.cheques.forEach(chq => {
-          const amt = parseFloat(String(chq.amount || '0').replace(/,/g, '')) || 0;
-          pdcTotal += amt;
+          // Only count cheques that are NOT cleared (PDC = Post-Dated Cheques handed to buyer)
+          if(!chq.cleared) {
+            const amt = parseFloat(String(chq.amount || '0').replace(/,/g, '')) || 0;
+            pdcTotal += amt;
+          }
         });
       }
       
@@ -11154,7 +11157,8 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       
       selectedCaseIds.forEach(id => {
         const caseData = cases[id];
-        if(caseData) {
+        // Skip archived cases - they should not be in aggregate calculation
+        if(caseData && !caseData.archived) {
           const settlement = calculateCaseSettlement(caseData);
           settlement.buyerName = getFirstLastName(settlement.buyerName);
           settlements.push(settlement);
@@ -11437,6 +11441,7 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         <head>
           <title>Aggregate Settlement Statement</title>
           <style>
+            @page { size: landscape; margin: 10mm; }
             body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
             h2 { margin: 0 0 5px 0; font-size: 16px; }
             .date { color: #666; font-size: 12px; margin-bottom: 15px; }
