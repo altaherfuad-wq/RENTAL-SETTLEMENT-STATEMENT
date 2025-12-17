@@ -568,6 +568,13 @@
     .archive-toggle:hover{background:#f3f4f6}
     .archive-toggle input{cursor:pointer}
     .archive-badge{font-size:0.7rem;background:#e5e7eb;color:#6b7280;padding:2px 6px;border-radius:4px;margin-left:6px}
+    .export-import-bar{display:flex;gap:8px;padding:12px 0;border-bottom:1px solid #e5e7eb;margin-bottom:12px}
+    .export-import-bar .btn{padding:8px 14px;font-size:0.8rem;border-radius:6px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none}
+    .export-import-bar .btn.export{background:#3b82f6;color:white}
+    .export-import-bar .btn.export:hover{background:#2563eb}
+    .export-import-bar .btn.import{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+    .export-import-bar .btn.import:hover{background:#e5e7eb}
+    .import-file-input{display:none}
     /* Case Selection Mode & Aggregate Statement */
     .selection-mode-bar{display:none;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;padding:12px 16px;border-radius:10px;margin-bottom:12px;animation:slideIn 0.3s ease}
     .selection-mode-bar.visible{display:flex}
@@ -3053,6 +3060,13 @@ Examples:
           <input type="text" id="caseNameInput" class="case-input" placeholder="e.g., Unit 512 - Alkesh Chamnani">
           <button id="saveNewCase" class="btn positive case-btn">Save</button>
         </div>
+      </div>
+      
+      <!-- Export/Import Bar -->
+      <div class="export-import-bar">
+        <button class="btn export" id="exportCasesBtn" title="Export all cases to a file">📤 Export Cases</button>
+        <button class="btn import" id="importCasesBtn" title="Import cases from a file">📥 Import Cases</button>
+        <input type="file" id="importFileInput" class="import-file-input" accept=".json">
       </div>
       
       <div id="loadSection">
@@ -11534,6 +11548,105 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
       }
     };
 
+    // Export cases to JSON file
+    function exportCases() {
+      const cases = getAllCases();
+      const caseCount = Object.keys(cases).length;
+      
+      if(caseCount === 0) {
+        alert('No cases to export.');
+        return;
+      }
+      
+      const exportData = {
+        exportDate: new Date().toISOString(),
+        version: '1.0',
+        caseCount: caseCount,
+        cases: cases
+      };
+      
+      const json = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rental-cases-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast(`Exported ${caseCount} case(s)`);
+    }
+
+    // Import cases from JSON file
+    function importCases(file) {
+      if(!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importData = JSON.parse(e.target.result);
+          
+          // Validate structure
+          if(!importData.cases || typeof importData.cases !== 'object') {
+            alert('Invalid file format. Please select a valid cases backup file.');
+            return;
+          }
+          
+          const importCount = Object.keys(importData.cases).length;
+          if(importCount === 0) {
+            alert('No cases found in the file.');
+            return;
+          }
+          
+          // Ask user what to do
+          const existingCases = getAllCases();
+          const existingCount = Object.keys(existingCases).length;
+          
+          let action = 'merge';
+          if(existingCount > 0) {
+            const choice = confirm(
+              `Found ${importCount} case(s) in the file.\n\n` +
+              `You have ${existingCount} existing case(s).\n\n` +
+              `Click OK to MERGE (add new cases, skip duplicates)\n` +
+              `Click Cancel to REPLACE ALL (delete existing cases)`
+            );
+            action = choice ? 'merge' : 'replace';
+          }
+          
+          if(action === 'replace') {
+            if(!confirm(`This will DELETE all ${existingCount} existing cases and replace with ${importCount} imported cases. Are you sure?`)) {
+              return;
+            }
+            localStorage.setItem(CASES_KEY, JSON.stringify(importData.cases));
+            showToast(`Replaced with ${importCount} case(s)`);
+          } else {
+            // Merge - add new cases, skip existing IDs
+            let added = 0, skipped = 0;
+            Object.keys(importData.cases).forEach(id => {
+              if(!existingCases[id]) {
+                existingCases[id] = importData.cases[id];
+                added++;
+              } else {
+                skipped++;
+              }
+            });
+            localStorage.setItem(CASES_KEY, JSON.stringify(existingCases));
+            showToast(`Added ${added} case(s), skipped ${skipped} duplicate(s)`);
+          }
+          
+          renderCasesList();
+          
+        } catch(err) {
+          console.error('Import error:', err);
+          alert('Failed to import. Please check the file format.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
     window.editCaseById = function(caseId) {
       const cases = getAllCases();
       const caseData = cases[caseId];
@@ -11688,6 +11801,20 @@ NET: AED ${Math.abs(net).toFixed(2)} (${isSellerPays ? 'Seller pays Buyer' : 'Bu
         renderCasesList();
       });
     }
+    
+    // Export/Import event listeners
+    const exportCasesBtn = qs('#exportCasesBtn');
+    const importCasesBtn = qs('#importCasesBtn');
+    const importFileInput = qs('#importFileInput');
+    
+    if(exportCasesBtn) exportCasesBtn.addEventListener('click', exportCases);
+    if(importCasesBtn) importCasesBtn.addEventListener('click', () => importFileInput?.click());
+    if(importFileInput) importFileInput.addEventListener('change', (e) => {
+      if(e.target.files && e.target.files[0]) {
+        importCases(e.target.files[0]);
+        e.target.value = ''; // Reset so same file can be selected again
+      }
+    });
     
     // Selection mode event listeners
     const selectModeBtn = qs('#selectModeBtn');
